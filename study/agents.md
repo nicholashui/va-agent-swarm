@@ -17,6 +17,8 @@
 8. [AI-Era Specialist Agents (46–52)](#8-ai-era-specialist-agents)
 9. [Specialist Meta-Agents (53–80)](#9-specialist-meta-agents)
 10. [Common Structure of an AI Agent](#10-common-structure-of-an-ai-agent)
+    - [10.1 Architecture Diagram](#101-architecture-diagram)
+    - [10.2 Component Reference Table](#102-component-reference-table)
 11. [References](#11-references)
 
 ---
@@ -197,6 +199,16 @@
 ## 10. Common Structure of an AI Agent
 
 Every agent — regardless of category — implements this skeleton. Derived from the source document's architecture patterns (§1), critique protocol (§6), and universal success-criteria framework (§5), enriched with current (2026) tooling research.
+
+### 10.1 Architecture Diagram
+
+The diagram below maps every component in the table that follows onto a single visual schematic — inputs flow into the **Agent Core**, are checked by a 3-layer **Quality Gate** (Spec → Rubric → Preference), and only emit a C2PA-signed artifact when all three pass. Side channels handle **Memory** (state), **Tools** (actions via MCP), **Critique** (peer feedback), **HiTL** (human escalation), and **Continuous Learning** (RLAIF feedback loop). The whole agent runs as a node inside the outer **Orchestration Layer** (LangGraph / CrewAI / AutoGen DAG).
+
+![Common AI Agent Structure](./common-agent-structure.svg)
+
+> **Tip:** view the diagram fullscreen on GitHub by clicking it, or download [`common-agent-structure.svg`](./common-agent-structure.svg) directly.
+
+### 10.2 Component Reference Table
 
 | # | Component | Purpose | Mechanism / Implementation Notes |
 |---|---|---|---|
