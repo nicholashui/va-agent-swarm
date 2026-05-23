@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 940"
+     font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+     role="img" aria-labelledby="diagram-title">
+  <title id="diagram-title">Common AI Agent Structure — universal skeleton for all 80 agents in the va-agent-swarm</title>
+  <defs>
+    <style>
+      .title{font-size:24px;font-weight:700;fill:#0F172A}
+      .subtitle{font-size:13px;font-weight:400;fill:#64748B}
+      .zone-label{font-size:10px;font-weight:700;letter-spacing:1.6px;fill:#64748B}
+      .box-title{font-size:13px;font-weight:600;fill:#0F172A}
+      .box-text{font-size:10.5px;fill:#475569}
+      .box-mono{font-size:10px;fill:#475569;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+      .core-name{font-size:18px;font-weight:700;fill:#FFFFFF}
+      .core-scope{font-size:11px;fill:#CBD5E1}
+      .core-label{font-size:9.5px;font-weight:700;letter-spacing:1.4px;fill:#94A3B8}
+      .core-text{font-size:11px;fill:#E2E8F0}
+      .core-mono{font-size:10px;fill:#94A3B8;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+      .gate-num{font-size:13px;font-weight:800;fill:#FFFFFF}
+      .gate-title{font-size:13px;font-weight:700;fill:#0F172A}
+      .gate-thresh{font-size:10px;font-weight:600;fill:#059669;font-family:ui-monospace,'SF Mono',monospace}
+      .arrow-label{font-size:9.5px;fill:#64748B;font-style:italic}
+      .legend-text{font-size:10.5px;fill:#334155}
+      .badge{font-size:9px;font-weight:700;letter-spacing:0.6px}
+      .footer{font-size:10px;fill:#94A3B8;font-style:italic}
+    </style>
+    <marker id="m-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#94A3B8"/></marker>
+    <marker id="m-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2563EB"/></marker>
+    <marker id="m-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#059669"/></marker>
+    <marker id="m-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C3AED"/></marker>
+    <marker id="m-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#D97706"/></marker>
+    <marker id="m-rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#E11D48"/></marker>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.5"/>
+      <feOffset dx="0" dy="1.5" result="o"/>
+      <feFlood flood-color="#0F172A" flood-opacity="0.07"/>
+      <feComposite in2="o" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="core-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1E293B"/><stop offset="100%" stop-color="#0B1220"/></linearGradient>
+    <linearGradient id="hitl-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#D97706"/></linearGradient>
+    <linearGradient id="learn-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient>
+  </defs>
+
+
+  <!-- Page background -->
+  <rect width="1280" height="940" fill="#FFFFFF"/>
+
+  <!-- Title block -->
+  <text x="40" y="42" class="title">Common AI Agent Structure</text>
+  <text x="40" y="64" class="subtitle">17-component skeleton shared by all 80 agents in the swarm — derived from §10 of agents.md</text>
+
+  <!-- Orchestration outer container -->
+  <rect x="20" y="88" width="1240" height="836" rx="14" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <rect x="34" y="80" width="430" height="18" fill="#FFFFFF"/>
+  <text x="40" y="93" class="zone-label">⎯⎯ ORCHESTRATION  ·  LANGGRAPH  /  CREWAI  /  AUTOGEN DAG</text>
+
+  <!-- ============ INPUTS COLUMN (left) ============ -->
+  <text x="40" y="118" class="zone-label">⎯⎯ INPUTS</text>
+
+  <!-- Brief box -->
+  <g filter="url(#s)">
+    <rect x="40" y="128" width="220" height="64" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="40" y="128" width="3" height="64" fill="#2563EB"/>
+    <text x="56" y="151" class="box-title">Brief / Phase Ticket</text>
+    <text x="56" y="170" class="box-text">Structured task spec from</text>
+    <text x="56" y="184" class="box-text">PlannerAgent → RouterAgent</text>
+  </g>
+
+  <!-- Knowledge box -->
+  <g filter="url(#s)">
+    <rect x="40" y="200" width="220" height="64" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="40" y="200" width="3" height="64" fill="#7C3AED"/>
+    <text x="56" y="223" class="box-title">Knowledge Distillation</text>
+    <text x="56" y="242" class="box-text">Award archives · journals ·</text>
+    <text x="56" y="256" class="box-text">consented expert interviews</text>
+  </g>
+
+  <!-- Critique inbox -->
+  <g filter="url(#s)">
+    <rect x="40" y="272" width="220" height="78" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="40" y="272" width="3" height="78" fill="#E11D48"/>
+    <text x="56" y="295" class="box-title">Critique Inbox</text>
+    <text x="56" y="312" class="box-mono">CritiqueMessage JSON bus</text>
+    <rect x="56" y="320" width="46" height="14" rx="3" fill="#FEE2E2"/>
+    <text x="60" y="330" class="badge" fill="#B91C1C">BLOCKER</text>
+    <rect x="106" y="320" width="40" height="14" rx="3" fill="#FED7AA"/>
+    <text x="110" y="330" class="badge" fill="#9A3412">MAJOR</text>
+    <rect x="150" y="320" width="40" height="14" rx="3" fill="#FEF3C7"/>
+    <text x="154" y="330" class="badge" fill="#854D0E">MINOR</text>
+  </g>
+
+
+  <!-- ============ STATE & ACTIONS (left, lower) ============ -->
+  <text x="40" y="376" class="zone-label">⎯⎯ STATE  ·  ACTIONS</text>
+
+  <!-- Memory box -->
+  <g filter="url(#s)">
+    <rect x="40" y="386" width="220" height="78" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="40" y="386" width="3" height="78" fill="#7C3AED"/>
+    <text x="56" y="408" class="box-title">Memory</text>
+    <text x="56" y="426" class="box-text">Vector DB (Pinecone / Weaviate)</text>
+    <text x="56" y="440" class="box-text">MemGPT-style episodic +</text>
+    <text x="56" y="454" class="box-text">long-term hierarchical</text>
+  </g>
+
+  <!-- Tool Access box -->
+  <g filter="url(#s)">
+    <rect x="40" y="472" width="220" height="98" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="40" y="472" width="3" height="98" fill="#2563EB"/>
+    <text x="56" y="494" class="box-title">Tool Access</text>
+    <text x="56" y="510" class="box-mono">via Model Context Protocol (MCP)</text>
+    <rect x="56" y="520" width="46" height="16" rx="3" fill="#DBEAFE"/>
+    <text x="60" y="531" class="badge" fill="#1E40AF">SORA 2</text>
+    <rect x="106" y="520" width="46" height="16" rx="3" fill="#DBEAFE"/>
+    <text x="110" y="531" class="badge" fill="#1E40AF">VEO 3.1</text>
+    <rect x="156" y="520" width="46" height="16" rx="3" fill="#DBEAFE"/>
+    <text x="160" y="531" class="badge" fill="#1E40AF">RUNWAY</text>
+    <rect x="56" y="540" width="46" height="16" rx="3" fill="#DBEAFE"/>
+    <text x="60" y="551" class="badge" fill="#1E40AF">KLING</text>
+    <rect x="106" y="540" width="56" height="16" rx="3" fill="#E0E7FF"/>
+    <text x="110" y="551" class="badge" fill="#3730A3">11LABS v3</text>
+    <rect x="166" y="540" width="46" height="16" rx="3" fill="#E0E7FF"/>
+    <text x="170" y="551" class="badge" fill="#3730A3">RESOLVE</text>
+  </g>
+
+  <!-- Constitution / Rubric box -->
+  <g filter="url(#s)">
+    <rect x="40" y="578" width="220" height="74" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="40" y="578" width="3" height="74" fill="#0EA5E9"/>
+    <text x="56" y="600" class="box-title">Constitution / Rubric</text>
+    <text x="56" y="618" class="box-text">Role-specific scoring guide</text>
+    <text x="56" y="632" class="box-mono" font-style="italic">e.g. Murch Rule of Six,</text>
+    <text x="56" y="645" class="box-mono" font-style="italic">12 Principles, WCAG 2.2</text>
+  </g>
+
+
+  <!-- ============ AGENT CORE (center, big) ============ -->
+  <text x="320" y="118" class="zone-label">⎯⎯ AGENT CORE</text>
+
+  <g filter="url(#s)">
+    <rect x="320" y="128" width="440" height="524" rx="14" fill="url(#core-grad)" stroke="#0F172A"/>
+
+    <!-- Identity bar -->
+    <rect x="320" y="128" width="440" height="62" rx="14" fill="#3B82F6" opacity="0.15"/>
+    <rect x="320" y="180" width="440" height="2" fill="#3B82F6" opacity="0.35"/>
+    <circle cx="354" cy="159" r="14" fill="#3B82F6"/>
+    <text x="349" y="164" font-size="14" font-weight="700" fill="#FFFFFF">A</text>
+    <text x="378" y="155" class="core-name">DirectorAgent</text>
+    <text x="378" y="172" class="core-mono">id: director-agent@2.1.0</text>
+    <rect x="660" y="146" width="84" height="22" rx="11" fill="#10B981"/>
+    <text x="685" y="161" class="badge" fill="#FFFFFF">REGISTERED</text>
+
+    <!-- Scope -->
+    <text x="338" y="208" class="core-label">SCOPE</text>
+    <text x="338" y="226" class="core-text">Owns vision; issues shot intents; sets pacing;</text>
+    <text x="338" y="240" class="core-text">approves takes. Mirrors a human craft role.</text>
+
+    <!-- Architecture Pattern (highlighted) -->
+    <rect x="338" y="258" width="404" height="118" rx="8" fill="#1E40AF" opacity="0.25" stroke="#3B82F6" stroke-opacity="0.4"/>
+    <text x="354" y="278" class="core-label">ARCHITECTURE PATTERN</text>
+    <text x="354" y="296" class="core-text">Reasoning &amp; learning loop (one or more):</text>
+
+    <!-- Pattern pills -->
+    <rect x="354" y="306" width="76" height="18" rx="9" fill="#3B82F6"/>
+    <text x="362" y="319" class="badge" fill="#FFFFFF">SELF-REFINE</text>
+    <rect x="436" y="306" width="68" height="18" rx="9" fill="#3B82F6"/>
+    <text x="446" y="319" class="badge" fill="#FFFFFF">REFLEXION</text>
+    <rect x="510" y="306" width="50" height="18" rx="9" fill="#3B82F6"/>
+    <text x="520" y="319" class="badge" fill="#FFFFFF">REACT</text>
+    <rect x="566" y="306" width="74" height="18" rx="9" fill="#3B82F6"/>
+    <text x="574" y="319" class="badge" fill="#FFFFFF">LLM-AS-JUDGE</text>
+
+    <rect x="354" y="330" width="92" height="18" rx="9" fill="#6366F1"/>
+    <text x="362" y="343" class="badge" fill="#FFFFFF">CONSTITUTIONAL</text>
+    <rect x="452" y="330" width="92" height="18" rx="9" fill="#6366F1"/>
+    <text x="460" y="343" class="badge" fill="#FFFFFF">MULTI-DEBATE</text>
+    <rect x="550" y="330" width="62" height="18" rx="9" fill="#6366F1"/>
+    <text x="560" y="343" class="badge" fill="#FFFFFF">DSPy</text>
+    <rect x="618" y="330" width="76" height="18" rx="9" fill="#6366F1"/>
+    <text x="626" y="343" class="badge" fill="#FFFFFF">LANGGRAPH</text>
+
+    <text x="354" y="365" class="core-mono" font-style="italic">Madaan'23 · Shinn'23 · Yao'22 · Zheng'23 · Bai'22 · Du'23</text>
+
+
+    <!-- Self-Refine loop visualization inside core -->
+    <g transform="translate(338,394)">
+      <text x="0" y="14" class="core-label">SELF-REFINE LOOP  ·  MAX 3 ITER</text>
+      <rect x="0" y="22" width="404" height="60" rx="8" fill="#0F172A" stroke="#334155"/>
+      <!-- 3 stage pills -->
+      <rect x="14" y="36" width="86" height="32" rx="6" fill="#1E293B" stroke="#475569"/>
+      <text x="22" y="50" class="core-label" fill="#94A3B8">1 · DRAFT</text>
+      <text x="22" y="64" class="core-text" font-size="9.5">Generate</text>
+      <path d="M 104 52 L 130 52" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#m-gray)"/>
+      <rect x="134" y="36" width="106" height="32" rx="6" fill="#1E293B" stroke="#475569"/>
+      <text x="142" y="50" class="core-label" fill="#94A3B8">2 · CRITIQUE</text>
+      <text x="142" y="64" class="core-text" font-size="9.5">Self-judge vs rubric</text>
+      <path d="M 244 52 L 270 52" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#m-gray)"/>
+      <rect x="274" y="36" width="86" height="32" rx="6" fill="#1E293B" stroke="#475569"/>
+      <text x="282" y="50" class="core-label" fill="#94A3B8">3 · REVISE</text>
+      <text x="282" y="64" class="core-text" font-size="9.5">Apply diff</text>
+      <!-- loop arrow back -->
+      <path d="M 360 36 Q 392 0 392 30 Q 392 78 360 60" fill="none" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#m-blue)"/>
+      <text x="370" y="14" class="arrow-label" fill="#60A5FA">loop</text>
+    </g>
+
+    <!-- Bottom of core: identity hash + signing -->
+    <rect x="338" y="500" width="404" height="44" rx="8" fill="#0F172A" stroke="#334155"/>
+    <text x="354" y="518" class="core-label">PROVENANCE</text>
+    <text x="354" y="536" class="core-mono" fill="#10B981">sha256(artifact) → C2PA manifest → signed by GateKeeperAgent</text>
+
+    <!-- HiTL escape hatch hint -->
+    <rect x="338" y="556" width="200" height="40" rx="8" fill="#451A03" stroke="#D97706"/>
+    <text x="354" y="572" class="core-label" fill="#FBBF24">HITL ESCALATION</text>
+    <text x="354" y="588" class="core-text" fill="#FED7AA" font-size="10">Consent · Legal · MPA · Festival</text>
+
+    <!-- Continuous learning hint -->
+    <rect x="546" y="556" width="196" height="40" rx="8" fill="#3B0764" stroke="#7C3AED"/>
+    <text x="562" y="572" class="core-label" fill="#C4B5FD">CONTINUOUS LEARNING</text>
+    <text x="562" y="588" class="core-text" fill="#DDD6FE" font-size="10">RLAIF / DPO · 30/60/90-day reality check</text>
+
+    <!-- Continuous distillation footer in core -->
+    <text x="338" y="620" class="core-label">SURPASS-HUMAN SIGNAL</text>
+    <text x="338" y="636" class="core-text" font-size="10">Pre-registered · Arena ≥55% · Cert pass · Lower 90-day defect rate</text>
+  </g>
+
+
+  <!-- ============ 3-LAYER QUALITY GATE (right column) ============ -->
+  <text x="800" y="118" class="zone-label">⎯⎯ 3-LAYER QUALITY GATE</text>
+
+  <!-- L1 Spec -->
+  <g filter="url(#s)">
+    <rect x="800" y="128" width="240" height="92" rx="10" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <circle cx="824" cy="152" r="14" fill="#2563EB"/>
+    <text x="819" y="157" class="gate-num">L1</text>
+    <text x="848" y="148" class="gate-title">Spec</text>
+    <text x="848" y="166" class="box-text">Did output meet structured brief?</text>
+    <line x1="816" y1="180" x2="1024" y2="180" stroke="#E2E8F0"/>
+    <text x="816" y="198" class="box-mono">JSON schema · codec · LUFS</text>
+    <text x="816" y="212" class="gate-thresh">PASS = 100%</text>
+  </g>
+
+  <!-- L2 Rubric -->
+  <g filter="url(#s)">
+    <rect x="800" y="232" width="240" height="92" rx="10" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <circle cx="824" cy="256" r="14" fill="#7C3AED"/>
+    <text x="819" y="261" class="gate-num">L2</text>
+    <text x="848" y="252" class="gate-title">Rubric</text>
+    <text x="848" y="270" class="box-text">Does it meet craft rubric?</text>
+    <line x1="816" y1="284" x2="1024" y2="284" stroke="#E2E8F0"/>
+    <text x="816" y="302" class="box-mono">LLM-as-Judge (Zheng'23)</text>
+    <text x="816" y="316" class="gate-thresh">PASS ≥ 85 / 100</text>
+  </g>
+
+  <!-- L3 Preference -->
+  <g filter="url(#s)">
+    <rect x="800" y="336" width="240" height="100" rx="10" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <circle cx="824" cy="360" r="14" fill="#059669"/>
+    <text x="819" y="365" class="gate-num">L3</text>
+    <text x="848" y="356" class="gate-title">Preference</text>
+    <text x="848" y="374" class="box-text">Beats human baseline?</text>
+    <line x1="816" y1="388" x2="1024" y2="388" stroke="#E2E8F0"/>
+    <text x="816" y="406" class="box-mono">Pairwise · AudienceSim ≥200</text>
+    <text x="816" y="420" class="box-mono">+ HiTL ≥20 samples</text>
+    <text x="816" y="434" class="gate-thresh">PASS ≥ 55% (surpass)</text>
+  </g>
+
+  <!-- Down arrows between gates -->
+  <path d="M 920 220 L 920 232" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#m-gray)"/>
+  <path d="M 920 324 L 920 336" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#m-gray)"/>
+
+  <!-- ============ OUTPUT (right end) ============ -->
+  <text x="800" y="464" class="zone-label">⎯⎯ ARTIFACT OUTPUT</text>
+
+  <g filter="url(#s)">
+    <rect x="800" y="474" width="240" height="92" rx="10" fill="#ECFDF5" stroke="#10B981"/>
+    <text x="816" y="498" class="box-title">Signed Artifact</text>
+    <text x="816" y="516" class="box-text">Emitted only if L1 ∧ L2 ∧ L3</text>
+    <line x1="816" y1="528" x2="1024" y2="528" stroke="#A7F3D0"/>
+    <text x="816" y="546" class="box-mono">shot_42_take_3.mp4</text>
+    <rect x="816" y="552" width="68" height="14" rx="3" fill="#D1FAE5"/>
+    <text x="822" y="562" class="badge" fill="#065F46">C2PA SEAL</text>
+    <rect x="892" y="552" width="86" height="14" rx="3" fill="#D1FAE5"/>
+    <text x="898" y="562" class="badge" fill="#065F46">SHA-256 CHAIN</text>
+  </g>
+
+  <!-- Down arrow from L3 to output -->
+  <path d="M 920 436 L 920 474" stroke="#059669" stroke-width="2" marker-end="url(#m-green)"/>
+  <text x="930" y="460" class="arrow-label" fill="#059669">all 3 pass →</text>
+
+
+  <!-- ============ BOTTOM ROW: Outputs to peers / human / learning ============ -->
+  <text x="40" y="678" class="zone-label">⎯⎯ DOWNSTREAM CHANNELS</text>
+
+  <!-- Critique Outbox -->
+  <g filter="url(#s)">
+    <rect x="40" y="688" width="280" height="116" rx="10" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect x="40" y="688" width="3" height="116" fill="#E11D48"/>
+    <text x="56" y="710" class="box-title">Critique Outbox → peers</text>
+    <text x="56" y="728" class="box-text">This agent's qualified review channel</text>
+    <line x1="56" y1="738" x2="304" y2="738" stroke="#E2E8F0"/>
+    <text x="56" y="754" class="box-mono">{ from_agent, to_agent,</text>
+    <text x="56" y="768" class="box-mono">  artifact_ref, severity,</text>
+    <text x="56" y="782" class="box-mono">  evidence[], rubric_ref }</text>
+    <text x="56" y="798" class="arrow-label">Disputes → JudgeAgent multi-agent debate</text>
+  </g>
+
+  <!-- HiTL Escalation -->
+  <g filter="url(#s)">
+    <rect x="340" y="688" width="280" height="116" rx="10" fill="url(#hitl-grad)"/>
+    <text x="356" y="712" class="box-title" fill="#FFFFFF">HiTL Escalation</text>
+    <text x="356" y="730" class="box-text" fill="#FEF3C7">When a human MUST decide</text>
+    <line x1="356" y1="740" x2="604" y2="740" stroke="#FFFFFF" stroke-opacity="0.3"/>
+    <text x="356" y="758" class="box-text" fill="#FFFFFF" font-weight="600">• Voice / likeness consent</text>
+    <text x="356" y="772" class="box-text" fill="#FFFFFF" font-weight="600">• Final legal sign-off</text>
+    <text x="356" y="786" class="box-text" fill="#FFFFFF" font-weight="600">• MPA rating · Festival eligibility</text>
+    <text x="356" y="800" class="box-mono" fill="#FEF3C7">SAG-AFTRA AI rider · EU AI Act Art. 50</text>
+  </g>
+
+  <!-- Continuous Learning -->
+  <g filter="url(#s)">
+    <rect x="640" y="688" width="280" height="116" rx="10" fill="url(#learn-grad)"/>
+    <text x="656" y="712" class="box-title" fill="#FFFFFF">Continuous Learning</text>
+    <text x="656" y="730" class="box-text" fill="#EDE9FE">Post-deployment improvement loop</text>
+    <line x1="656" y1="740" x2="904" y2="740" stroke="#FFFFFF" stroke-opacity="0.3"/>
+    <text x="656" y="758" class="box-mono" fill="#FFFFFF">1. Bootstrap on licensed corpora</text>
+    <text x="656" y="772" class="box-mono" fill="#FFFFFF">2. Paid expert interviews → SFT</text>
+    <text x="656" y="786" class="box-mono" fill="#FFFFFF">3. Live RLAIF (DPO / KTO)</text>
+    <text x="656" y="800" class="box-mono" fill="#FFFFFF">4. 30 / 60 / 90-day reality check</text>
+  </g>
+
+  <!-- Phase Gate Compliance -->
+  <g filter="url(#s)">
+    <rect x="940" y="688" width="280" height="116" rx="10" fill="#0F172A"/>
+    <text x="956" y="712" class="box-title" fill="#FFFFFF">Phase-Gate Compliance</text>
+    <text x="956" y="730" class="box-text" fill="#CBD5E1">Verified by GateKeeperAgent</text>
+    <line x1="956" y1="740" x2="1204" y2="740" stroke="#334155"/>
+    <rect x="956" y="748" width="60" height="22" rx="4" fill="#1E40AF"/>
+    <text x="966" y="763" class="badge" fill="#FFFFFF">L1 SPEC</text>
+    <text x="1022" y="763" class="box-text" fill="#94A3B8">→</text>
+    <rect x="1036" y="748" width="74" height="22" rx="4" fill="#6D28D9"/>
+    <text x="1046" y="763" class="badge" fill="#FFFFFF">L2 RUBRIC</text>
+    <text x="1116" y="763" class="box-text" fill="#94A3B8">→</text>
+    <rect x="1130" y="748" width="74" height="22" rx="4" fill="#059669"/>
+    <text x="1138" y="763" class="badge" fill="#FFFFFF">L3 PREF.</text>
+    <text x="956" y="788" class="box-mono" fill="#10B981">∀ true → advance · sign C2PA · emit</text>
+  </g>
+
+
+  <!-- ============ ARROWS connecting major elements ============ -->
+  <!-- Inputs → Core (3 horizontal arrows) -->
+  <path d="M 260 160 L 320 200" stroke="#2563EB" stroke-width="1.5" fill="none" marker-end="url(#m-blue)"/>
+  <path d="M 260 232 L 320 232" stroke="#7C3AED" stroke-width="1.5" fill="none" marker-end="url(#m-purple)"/>
+  <path d="M 260 311 L 320 280" stroke="#E11D48" stroke-width="1.5" fill="none" marker-end="url(#m-rose)"/>
+
+  <!-- Memory ↔ Core (bidirectional) -->
+  <path d="M 260 425 L 320 405" stroke="#7C3AED" stroke-width="1.5" fill="none" marker-end="url(#m-purple)" marker-start="url(#m-purple)"/>
+
+  <!-- Tools ↔ Core (bidirectional) -->
+  <path d="M 260 521 L 320 470" stroke="#2563EB" stroke-width="1.5" fill="none" marker-end="url(#m-blue)" marker-start="url(#m-blue)"/>
+
+  <!-- Constitution → Core -->
+  <path d="M 260 615 L 320 540" stroke="#0EA5E9" stroke-width="1.5" fill="none" marker-end="url(#m-blue)"/>
+
+  <!-- Core → Quality Gate -->
+  <path d="M 760 174 L 800 174" stroke="#94A3B8" stroke-width="2" fill="none" marker-end="url(#m-gray)"/>
+  <text x="765" y="166" class="arrow-label">draft →</text>
+
+  <!-- Quality Gate Output → bottom flows -->
+  <path d="M 920 566 L 920 620 Q 920 640 900 640 L 480 640 Q 460 640 460 660 L 460 688" stroke="#059669" stroke-width="1.5" fill="none" marker-end="url(#m-green)" stroke-dasharray="3 3"/>
+  <text x="640" y="635" class="arrow-label" fill="#059669">accepted critiques appended to provenance</text>
+
+  <!-- HiTL bidirectional -->
+  <path d="M 540 596 L 540 688" stroke="#D97706" stroke-width="1.5" fill="none" marker-end="url(#m-amber)" stroke-dasharray="3 3"/>
+
+  <!-- Continuous Learning loop back to top (curved feedback arrow) -->
+  <path d="M 780 712 L 1240 712 L 1240 218 L 760 218" stroke="#7C3AED" stroke-width="1.5" fill="none" marker-end="url(#m-purple)" stroke-dasharray="4 3" opacity="0.7"/>
+  <text x="1100" y="208" class="arrow-label" fill="#7C3AED">RLAIF → weight / prompt update</text>
+
+  <!-- ============ LEGEND ============ -->
+  <g transform="translate(40,830)">
+    <text x="0" y="14" class="zone-label">⎯⎯ LEGEND</text>
+    <line x1="0" y1="34" x2="40" y2="34" stroke="#2563EB" stroke-width="1.5" marker-end="url(#m-blue)"/>
+    <text x="48" y="38" class="legend-text">tool / data flow</text>
+    <line x1="170" y1="34" x2="210" y2="34" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#m-purple)" marker-start="url(#m-purple)"/>
+    <text x="218" y="38" class="legend-text">memory / learning (bidir.)</text>
+    <line x1="380" y1="34" x2="420" y2="34" stroke="#E11D48" stroke-width="1.5" marker-end="url(#m-rose)"/>
+    <text x="428" y="38" class="legend-text">peer critique</text>
+    <line x1="540" y1="34" x2="580" y2="34" stroke="#D97706" stroke-width="1.5" marker-end="url(#m-amber)" stroke-dasharray="3 3"/>
+    <text x="588" y="38" class="legend-text">human escalation</text>
+    <line x1="720" y1="34" x2="760" y2="34" stroke="#059669" stroke-width="1.5" marker-end="url(#m-green)"/>
+    <text x="768" y="38" class="legend-text">passed gate / artifact</text>
+    <line x1="900" y1="34" x2="940" y2="34" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#m-gray)"/>
+    <text x="948" y="38" class="legend-text">control flow</text>
+  </g>
+
+  <!-- Footer attribution -->
+  <text x="40" y="908" class="footer">Source: ai_agent_video_production_workflow.md §1, §5, §6, §7  ·  Foundational papers: Madaan'23, Shinn'23, Yao'22, Zheng'23, Bai'22, Du'23  ·  C2PA spec  ·  MCP (Anthropic 2024 → Linux Foundation 2025)</text>
+</svg>
