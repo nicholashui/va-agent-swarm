@@ -4,7 +4,7 @@
 
 ---
 
-## 1. Agent Architecture Patterns (shared reference)
+## 1. System Foundations and Reference-Scanning Plan
 
 | Pattern | Purpose | Reference |
 |---|---|---|
@@ -20,11 +20,72 @@
 
 All agents below are assumed to be implemented as orchestrated nodes in a CrewAI / AutoGen / LangGraph topology, with tool access to generative video models (Sora, Veo, Runway, Kling), TTS/voice-clone APIs (ElevenLabs, Sync.so, Hedra), DCC tooling (Resolve, Nuke, AE via MCP bridges), and a shared critique bus.
 
+### 1.1 Reference Scanning and Knowledge-Synthesis Workflow
+
+The documentation-enhancement process for this system follows a fixed scan-to-synthesis loop so that new material added from `study/reference/how_to_build_a_video_agent_system` is traceable, scoped, and technically consistent.
+
+| Step | Method | What is extracted | Admission rule |
+|---|---|---|---|
+| **Inventory** | Enumerate all chapters, agent lists, and distillation notes before reading | File coverage map, chapter clusters, missing topic alerts | No section is updated until all reference files are indexed |
+| **Cluster** | Group files by function: orchestration, creation, QA, delivery, optimization, training | Thematic buckets and overlap map | A concept must be assigned to at least one workflow stage |
+| **Extract** | Pull technical concepts, implementation details, metrics, handoffs, and best practices | Candidate facts, agent responsibilities, thresholds, artifact types | Extract only claims that are specific enough to operationalize |
+| **Verify** | Cross-check each candidate against a second reference chapter, an existing section, or a standards anchor already named in this file | Verified additions, rejected assumptions, ambiguity flags | Ambiguous or single-source claims remain out of the core workflow |
+| **Map** | Attach verified material to the most relevant section in this document | Patch list by section, table, or phase gate | Prefer enriching existing structure over adding parallel taxonomies |
+| **Integrate** | Rewrite affected sections so new detail strengthens architecture, handoffs, and evaluation logic | Updated workflow prose, tables, and shared contracts | Added material must improve technical depth without duplicating nearby content |
+| **Review** | Re-read end to end for consistency, completeness, terminology, and factual alignment | Finalized revision set and follow-up fixes | No release until naming, logic flow, and gate criteria are internally consistent |
+
+**Working rules:**
+1. Extract concepts under four lenses: **technical architecture**, **implementation sequence**, **quality/compliance**, and **continuous learning**.
+2. Prefer workflow-relevant facts over market commentary unless the market fact changes routing, cost, or scale decisions.
+3. Record handoff artifacts explicitly: prompts, scene packets, stems, graded masters, manifests, provenance bundles, and telemetry.
+4. Reject role inflation unless a new role closes a real gap in orchestration, validation, continuity, delivery, or retraining.
+5. Treat delivery packaging, observability, and asset management as system architecture, not postscript operations.
+
+### 1.2 Runtime Production Systems Architecture
+
+| Layer | Core responsibility | Implementation notes |
+|---|---|---|
+| **Orchestration runtime** | Plan, route, schedule, retry, and escalate agent tasks | PlannerAgent decomposes the brief; OrchestratorAgent executes the DAG; RouterAgent selects agent-model pairs; JudgeAgent arbitrates disputes |
+| **Asset and data backbone** | Store every prompt, source asset, derived asset, version, dependency edge, and usage right | Requires immutable asset IDs, copy-on-write versions, dependency-triggered rerender rules, and searchable metadata |
+| **Message and state fabric** | Carry critique, job status, render events, and gate decisions across agents | Event-driven bus plus durable state store; every long-running job must be resumable and auditable |
+| **Quality and continuity mesh** | Run technical QC, continuity checks, artifact detection, accessibility, and compliance gates | Uses multi-pass validation, temporal continuity scans, loudness and color checks, and role-specific rubric judges |
+| **Observability and replay** | Expose live status, failure causes, bottlenecks, and historical decisions | Structured logs, job timelines, gate dashboards, benchmark alerts, and replayable artifact lineage |
+| **Delivery fabric** | Package masters into theatrical, streaming, broadcast, archive, trailer, and campaign variants | Distribution is a branching pipeline with outlet-specific specs, captions, metadata, DRM/KDM, and provenance payloads |
+| **Compute and storage scaling** | Match infrastructure spend to production scale without breaking deadlines | Separate interactive generation from batch rendering; autoscale GPU pools; tier hot, warm, and archive storage |
+
+### 1.3 Shared Artifact Handoff Contract
+
+Every phase hands downstream agents a machine-readable manifest so creative work, QA, and compliance stay synchronized.
+
+| Field | Purpose |
+|---|---|
+| **artifact_id / version** | Unique identity for every output and revision |
+| **parent_assets** | Provenance links to scripts, prompts, plates, stems, references, and prior cuts |
+| **brief_scope** | The exact subtask, acceptance criteria, and target audience segment |
+| **technical_spec** | Codec, aspect ratio, duration, frame rate, color space, loudness, caption requirements |
+| **rights_and_consent** | License state, likeness/voice consent state, territorial limits, embargo rules |
+| **continuity_state** | Character look, props, wardrobe, environment, scene-time logic, and identity hash |
+| **qc_status** | Latest L1/L2/L3 result plus six-pass delivery-QC status |
+| **target_channels** | Theatrical, streaming, broadcast, archive, paid social, CRM, LMS, or festival endpoints |
+| **provenance_manifest** | C2PA reference, critique log pointer, and final sign-off chain |
+
+### 1.4 Reassessment Discipline
+
+Documentation changes for this system are reviewed as a repeated challenge cycle rather than a single proofread. A 100-pass reassessment can be grouped into the following bands:
+
+| Passes | Primary question |
+|---|---|
+| **1-20** | Are all extracted claims traceable to the reference set and aligned with the document's structure? |
+| **21-40** | Does the architecture describe the real control plane: orchestration, memory, assets, delivery, and observability? |
+| **41-60** | Are workflow handoffs explicit enough for implementation, QA, continuity, and compliance automation? |
+| **61-80** | Are metrics, thresholds, and evaluation layers technically coherent across creative, technical, and business gates? |
+| **81-100** | Is the wording unambiguous, internally consistent, and suitable for professional technical documentation? |
+
 ---
 
 ## 2. Master Agent Roster
 
-Replaces the human crew in `human_video_production_workflow.md` § *Master Crew Reference Table*. Same 52 roles, agent-ified.
+Replaces the human crew in `human_video_production_workflow.md` § *Master Crew Reference Table*. It starts from the same 52 craft roles, then extends the operating model with specialist meta-agents and shared production services.
 
 ### 2.1 Above-the-Line Agents
 
@@ -192,16 +253,32 @@ Cross-cutting agents that don't map 1:1 to a human craft role but are essential 
 
 Maps the 10 workflows in `human_video_production_workflow.md` to agent-only crews per phase. Each cell lists the **lead agent** for that phase plus any critic agents that gate the handoff.
 
+### 3.0 Shared Workflow Skeleton and Handoff Contracts
+
+Before any archetype-specific crew activates, every workflow passes through the same operational skeleton. For compactness, the tables in §3.1-§3.10 fold **greenlight** into Concept and fold **channel packaging** into Distribution, but the underlying handoff contract remains the same.
+
+| Phase | Primary outputs | Mandatory gates |
+|---|---|---|
+| **Greenlight** | Approved brief, KPI targets, budget envelope, rights-risk register, scale profile | ProducerAgent, FinanceAgent, ComplianceAgent, PlannerAgent |
+| **Pre-production packet** | Script lock, storyboard/lookbook, asset IDs, character/world bibles, consent state, continuity baselines | DirectorAgent, ScreenwriterAgent, Asset/Data Backbone, Continuity checks |
+| **Production packet** | Shot prompts, camera plans, performance refs, plates, generated takes, render telemetry | PromptEngineerAgent / GeneratorOperator, CinematographerAgent, AIQAConsistencyAgent |
+| **Post master** | Timelines, graded masters, stems, captions/subtitles, QC reports, outlet variants | EditorAgent, ColoristAgent, SoundMixerAgent, Accessibility checks |
+| **Review and release pack** | AudienceSim results, legal review, provenance bundle, sign-off log, unresolved-risk list | ComplianceAgent, JudgeAgent, HumanInTheLoop when required |
+| **Distribution package** | DCP, streaming mezzanine, broadcast master, archive package, trailer/social cutdowns, metadata bundle | Delivery-spec validation, accessibility validation, territorial rights validation |
+| **Post-launch learning set** | Performance telemetry, corrections, defect log, benchmark deltas, retraining tickets | AnalystAgent, EvaluationHarnessAgent, PromptOptimizerAgent, model-improvement loop |
+
+**Distribution branching rule:** any workflow at S2 scale or above should assume at least four downstream branches when relevant: **theatrical**, **streaming**, **broadcast**, and **archive**, with marketing derivatives generated in parallel rather than as an afterthought.
+
 ### 3.1 Workflow A — Viral Hook Clip / Meme
 
 | Phase | Lead Agent | Critic Agents (Gate) |
 |---|---|---|
-| Concept | TrendResearchAgent + CopywriterAgent | SocialMediaStrategistAgent |
-| Production | GeneratorOperatorAgent | AIQAConsistencyAgent |
-| Post | EditorAgent + CaptionerAgent | AccessibilityAgent |
+| Concept | TrendIntelligenceAgent + CopywriterAgent | SocialMediaStrategistAgent |
+| Production | PromptEngineerAgent / GeneratorOperator | AIQAConsistencyAgent |
+| Post | EditorAgent + AccessibilityOptimizerAgent | AccessibilityAgent |
 | Review | SocialMediaStrategistAgent | AudienceSimAgent |
 | Distribution | SocialMediaStrategistAgent | ComplianceAgent |
-| Post-launch | AnalystAgent + CommunityAgent | StrategistAgent |
+| Post-launch | AnalystAgent + CommunityAgent | AudienceSimAgent |
 
 ### 3.2 Workflow B — UGC-Style Performance Ad
 
@@ -219,7 +296,7 @@ Maps the 10 workflows in `human_video_production_workflow.md` to agent-only crew
 | Phase | Lead Agent | Critic Agents |
 |---|---|---|
 | Concept | InstructionalDesignAgent + ScreenwriterAgent + StoryboardAgent | SMEAgent |
-| Production | VOAgent + AnimatorAgent + ComposerAgent | DirectorAgent |
+| Production | VoiceOverAgent + AnimatorAgent + ComposerAgent | DirectorAgent |
 | Post | EditorAgent + SoundMixerAgent | AccessibilityAgent |
 | Review | SMEAgent + BrandAgent | ComplianceAgent |
 | Distribution | MarketingAgent + SEOAgent | AnalystAgent |
@@ -234,14 +311,14 @@ Maps the 10 workflows in `human_video_production_workflow.md` to agent-only crew
 | Post | AIQAConsistencyAgent | AccessibilityAgent |
 | Review | TrustSafetyAgent | ComplianceAgent (GDPR/CCPA) |
 | Distribution | CRMAgent | ComplianceAgent |
-| Post-launch | AnalystAgent | StrategistAgent |
+| Post-launch | AnalystAgent | AudienceSimAgent |
 
 ### 3.5 Workflow E — AI Multi-Scene Short Film
 
 | Phase | Lead Agent | Critic Agents |
 |---|---|---|
 | Concept | DirectorAgent + ScreenwriterAgent + StoryboardAgent + ConceptArtistAgent | ShowrunnerAgent |
-| Production | PromptEngineerAgent + GeneratorOperatorAgent + VoiceCloneAgent + ComposerAgent | AIQAConsistencyAgent + LipSyncAgent |
+| Production | PromptEngineerAgent / GeneratorOperator + VoiceCloneAgent + ComposerAgent | AIQAConsistencyAgent + LipSyncAgent |
 | Post | EditorAgent + ColoristAgent + VFXSupervisorAgent | DirectorAgent |
 | Review | DirectorAgent + LegalAgent (C2PA) | AvatarDesignAgent (consent) |
 | Distribution | ProducerAgent + FestivalStrategistAgent | ComplianceAgent |
@@ -253,7 +330,7 @@ Maps the 10 workflows in `human_video_production_workflow.md` to agent-only crew
 |---|---|---|
 | Concept | InstructionalDesignAgent + ComplianceAgent + ScreenwriterAgent | SMEAgent |
 | Production | AvatarDesignAgent + MotionGraphicsAgent | DirectorAgent |
-| Post | EditorAgent + AccessibilityAgent | CaptionerAgent |
+| Post | EditorAgent + AccessibilityAgent | AccessibilityOptimizerAgent |
 | Review | SMEAgent + ComplianceAgent + AccessibilityAgent | LegalAgent |
 | Distribution | LMSAgent | AnalystAgent |
 | Post-launch | AnalystAgent + InstructionalDesignAgent | LearnerSimAgent |
@@ -263,11 +340,11 @@ Maps the 10 workflows in `human_video_production_workflow.md` to agent-only crew
 | Phase | Lead Agent | Critic Agents |
 |---|---|---|
 | Concept | MusicVideoDirectorAgent + ProducerAgent + ChoreographyAgent | LabelA&RAgent |
-| Production | DoPAgent + GeneratorOperatorAgent | VFXSupervisorAgent |
+| Production | CinematographerAgent (DoP) + PromptEngineerAgent / GeneratorOperator + ContinuityAgent | VFXSupervisorAgent |
 | Post | EditorAgent + ColoristAgent + SoundMixerAgent | DirectorAgent |
 | Review | MusicSupervisorAgent + ComplianceAgent | LegalAgent (sample clearance) |
 | Distribution | SocialMediaStrategistAgent | LabelDigitalAgent |
-| Post-launch | AnalystAgent | StrategistAgent |
+| Post-launch | AnalystAgent | AudienceSimAgent |
 
 ### 3.8 Workflow H — AI Avatar Talking-Head
 
@@ -285,8 +362,8 @@ Maps the 10 workflows in `human_video_production_workflow.md` to agent-only crew
 | Phase | Lead Agent | Critic Agents |
 |---|---|---|
 | Concept | ShowrunnerAgent + JournalistAgent + ScreenwriterAgent | FactCheckerAgent |
-| Production | DirectorAgent + DoPAgent + ArchiveProducerAgent + MotionGraphicsAgent | LegalAgent (clearance) |
-| Post | EditorAgent + VOAgent + ColoristAgent + SoundMixerAgent | AccessibilityAgent |
+| Production | DirectorAgent + CinematographerAgent (DoP) + ArchiveProducerAgent + MotionGraphicsAgent + FactCheckerAgent | LegalAgent (clearance) |
+| Post | EditorAgent + VoiceOverAgent + ColoristAgent + SoundMixerAgent | AccessibilityAgent |
 | Review | FactCheckerAgent + LegalAgent + StandardsEditorAgent | EthicsAgent (SPJ) |
 | Distribution | ChannelManagerAgent + SocialMediaStrategistAgent + SEOAgent | AnalystAgent |
 | Post-launch | AnalystAgent + StandardsEditorAgent | CorrectionsAgent |
@@ -296,11 +373,11 @@ Maps the 10 workflows in `human_video_production_workflow.md` to agent-only crew
 | Phase | Lead Agent | Critic Agents |
 |---|---|---|
 | Development | ScreenwriterAgent + ProducerAgent + DirectorAgent + ConceptArtistAgent + CastingAgent | LegalAgent (IP, consent) |
-| Pre-Production | StoryboardAgent + ProductionDesignAgent + CostumeAgent | DirectorAgent |
-| Production | GeneratorOperatorAgent (pool) + VoiceCloneAgent + LipSyncAgent + ComposerAgent | AIQAConsistencyAgent + AvatarDesignAgent |
+| Pre-Production | StoryboardAgent + ProductionDesignAgent + CostumeAgent + ContinuityAgent | DirectorAgent |
+| Production | PromptEngineerAgent / GeneratorOperator (pool) + VoiceCloneAgent + LipSyncAgent + ComposerAgent | AIQAConsistencyAgent + AvatarDesignAgent |
 | Post | EditorAgent + VFXSupervisorAgent + ColoristAgent + SoundMixerAgent | DirectorAgent |
 | Review | DirectorAgent + AudienceSimAgent + MPAAgent + LegalAgent (C2PA) | EthicsAgent |
-| Distribution | SalesAgent + DistributorAgent + TrailerEditorAgent + MarketingAgent | ComplianceAgent |
+| Distribution | SalesAgent + DistributorAgent + TrailerEditorAgent + MarketingAgent + ArchiveMasterAgent | ComplianceAgent |
 | Post-launch | AnalystAgent + AwardsStrategistAgent + CriticAgent (festival/press sim) | ProducerAgent |
 
 ---
@@ -339,6 +416,19 @@ Every agent reports its self-quality on three layers; orchestrator advances the 
 | **L1 Spec** | Did the output meet the structured brief? | JSON schema check + tool-validators (codec, LUFS, aspect, length) | 100% |
 | **L2 Rubric** | Does it meet the craft rubric for this role? | LLM-as-judge with role-specific constitution (e.g., Murch's Rule of Six for editing) | ≥85/100 |
 | **L3 Preference** | Would the target audience choose this over a human baseline? | Pairwise vs human reference, AudienceSim panel of ≥200 simulated personas + ≥20 HiTL samples | Win rate ≥50% (parity) or ≥55% (surpass) |
+
+### Delivery QC Mesh
+
+The L1/L2/L3 framework governs agent quality, but no asset is releasable until it also clears the shared six-pass delivery mesh:
+
+| Pass | Focus | Typical checks |
+|---|---|---|
+| **Q1 Spec validation** | File and schema correctness | Resolution, duration, frame rate, aspect ratio, codec, metadata completeness |
+| **Q2 Visual artifact detection** | Render integrity | Banding, flicker, compression artifacts, focus failure, temporal instability |
+| **Q3 Audio and sync validation** | Sound quality | Loudness target, clipping, phase coherence, phoneme-viseme sync, lip-sync drift |
+| **Q4 Continuity validation** | Story and scene consistency | Character identity, wardrobe, props, environment state, temporal logic |
+| **Q5 Perceptual quality** | Human-viewer plausibility | Aesthetic preference, intelligibility, emotional fit, perceived polish |
+| **Q6 Delivery compliance** | Outlet readiness | DCP/package validation, streaming metadata, broadcast safe levels, archive checksums, caption availability |
 
 ### How an Agent Knows It Surpasses Human Pros
 
@@ -393,6 +483,36 @@ How agents keep learning from real practitioners:
 | **Award-rubric grounding** | Reverse-engineer scoring sheets of major guilds → constitution | DGA, WGA, ASC, ACE, MPSE, VES, Annie, CAS, HPA, Cannes, AMPAS |
 | **Adversarial red-team** | DeepfakeDetectionAgent + EthicsAgent attack each new model version | Hany Farid lab benchmarks; Partnership on AI Synthetic Media Framework |
 | **Post-launch reality check** | 30/60/90-day metrics fed back as ground truth (retention, ROAS, completion, awards) | YouTube Analytics, Wistia, Meta/TikTok ad reports, Metacritic, Box Office Mojo |
+
+### 7.1 Distillation Inputs and Governance
+
+| Data family | Examples | Why it matters |
+|---|---|---|
+| **Narrative text** | Scripts, subtitles, transcripts, treatments, reviews | Trains story structure, dialogue, narrative compression, and claim extraction |
+| **Visual material** | Storyboards, frames, plates, concept art, shot libraries | Grounds composition, continuity, lensing, and style transfer |
+| **Audio material** | Dialogue, ADR, ambience, SFX libraries, score stems | Supports voice, sync, sound design, mix, and emotion modeling |
+| **Structured metadata** | Budgets, schedules, rights records, view-through, CTR, ROAS, corrections | Connects creative output to business and compliance outcomes |
+| **Multimodal pairs** | Video + audio + subtitle sets, prompt/output pairs, scene packets | Enables end-to-end generation, QA, and retrieval workflows |
+| **Operational telemetry** | Queue depth, render latency, rerender reasons, cache hits, benchmark regressions | Turns production behavior into optimization and retraining signal |
+
+**Governance rules:** licensed or consented sourcing only; explicit voice/likeness consent chain; dataset versioning; bias balancing across genre, era, language, and culture; provenance attachment for all release-critical assets.
+
+### 7.2 Scale Profiles and Deployment Strategy
+
+| Scale | Typical scope | Workflow implications |
+|---|---|---|
+| **S1-S2** | Short clips, UGC ads, lightweight explainers | Small agent set, fast iterations, limited branching, lighter observability stack |
+| **S3-S4** | Broadcast, premium social, music video, recurring branded series | Add continuity, stronger QC, multi-format delivery, scheduled publishing, richer analytics |
+| **S5-S6** | Documentary, long-form branded content, enterprise learning libraries | Require archive strategy, stronger rights management, benchmark monitoring, multilingual packaging |
+| **S7** | Feature-length or cinematic productions | Full branch packaging, heavy render orchestration, distributed storage, formal release governance, long-tail retraining |
+
+### 7.3 Closed-Loop Improvement
+
+1. Capture post-launch telemetry across audience retention, ROAS, completion, corrections, and platform-specific delivery failures.
+2. Convert repeated failure modes into prompt updates, routing policies, rubric revisions, or model-training tickets.
+3. Run benchmark and regression suites before promoting a new model, prompt pack, or orchestration policy.
+4. Use canary or limited-rollout deployment for high-risk changes in avatar, voice, compliance, and delivery pipelines.
+5. Keep the learning loop bidirectional: production quality informs training, and updated training assets trigger targeted rerender or repackaging only where dependencies require it.
 
 ---
 

@@ -4,7 +4,7 @@
 
 ---
 
-## 1. 代理架構模式（共享參考）
+## 1. 系統基礎與參考掃描計劃
 
 | 模式 | 用途 | 參考 |
 |---|---|---|
@@ -20,11 +20,72 @@
 
 以下所有代理均假設以編排節點的形式在 CrewAI／AutoGen／LangGraph 拓撲中實現，並具有對生成式影片模型（Sora、Veo、Runway、Kling）、TTS／語音克隆 API（ElevenLabs、Sync.so、Hedra）、DCC 工具（Resolve、Nuke、AE，通過 MCP 橋接）以及共享評論匯流排的工具訪問權限。
 
+### 1.1 參考資料掃描與知識綜合流程
+
+本系統的文件增強流程遵循固定的「掃描 → 綜合」循環，確保從 `study/reference/how_to_build_a_video_agent_system` 加入的新內容都可追溯、範圍清晰，且在技術上保持一致。
+
+| 步驟 | 方法 | 抽取內容 | 納入規則 |
+|---|---|---|---|
+| **盤點** | 在閱讀前先列出所有章節、代理清單與蒸餾說明 | 檔案覆蓋圖、章節分群、缺漏主題提示 | 未完成全部參考檔案索引前，不更新正文 |
+| **分群** | 按功能將檔案分為：編排、創作、質檢、交付、優化、訓練 | 主題分組與重疊圖 | 每個概念必須能對應到至少一個工作流程階段 |
+| **抽取** | 擷取技術概念、實作細節、指標、交接方式與最佳實踐 | 候選事實、代理職責、門檻、產物類型 | 只抽取足夠具體、可操作化的主張 |
+| **驗證** | 以第二份參考章節、現有章節或本文件已採用的標準作交叉核對 | 已驗證增補、排除假設、歧義標記 | 模糊或僅單一來源支持的內容，不納入核心工作流程 |
+| **映射** | 將已驗證內容掛接到本文件中最合適的章節 | 依章節、表格或階段關卡整理的修訂清單 | 優先強化現有結構，而非再平行建立一套新分類 |
+| **整合** | 重寫受影響段落，讓新增細節強化架構、交接與評估邏輯 | 更新後的工作流程文字、表格與共享契約 | 新內容必須提升技術深度，且不得與鄰近內容重複 |
+| **覆核** | 由頭到尾重讀，檢查一致性、完整性、術語及事實對齊 | 最終修訂集與後續修正項目 | 術語、邏輯流程與關卡標準未一致前不得發布 |
+
+**工作規則：**
+1. 以四個視角抽取概念：**技術架構**、**實作次序**、**品質／合規**、**持續學習**。
+2. 除非市場資料會直接改變路由、成本或規模決策，否則優先保留與工作流程直接相關的事實。
+3. 明確記錄交接產物：提示詞、場景封包、分軌、調色母版、清單檔、來源證明封裝與遙測資料。
+4. 除非新增角色能真正補上編排、驗證、連續性、交付或再訓練缺口，否則不任意膨脹角色數量。
+5. 將交付封裝、可觀測性與資產管理視為系統架構的一部分，而不是事後補充操作。
+
+### 1.2 執行期製作系統架構
+
+| 層級 | 核心責任 | 實作說明 |
+|---|---|---|
+| **編排執行層** | 規劃、路由、排程、重試與升級代理任務 | PlannerAgent 拆解簡報；OrchestratorAgent 執行 DAG；RouterAgent 選擇代理與模型組合；JudgeAgent 處理爭議 |
+| **資產與資料骨幹** | 儲存所有提示詞、來源資產、衍生資產、版本、依賴關係及使用權 | 需要不可變資產 ID、copy-on-write 版本、依賴觸發重渲染規則，以及可搜尋中介資料 |
+| **訊息與狀態層** | 在代理之間傳遞評論、工作狀態、渲染事件與關卡決策 | 採事件驅動匯流排加持久狀態儲存；所有長時間工作都必須可恢復且可審計 |
+| **品質與連續性驗證網** | 執行技術 QC、連戲檢查、瑕疵偵測、無障礙與合規關卡 | 使用多輪驗證、時間連續性掃描、響度與色彩檢查，以及角色專屬評分法官 |
+| **可觀測性與重播** | 顯示即時狀態、失敗原因、瓶頸與歷史決策 | 結構化日誌、工作時間線、關卡儀表板、基準警報，以及可回放的資產沿襲鏈 |
+| **交付封裝層** | 將母版封裝為戲院、串流、廣播、存檔、預告片及活動版本 | 發行是分支式流程，需按渠道處理規格、字幕、中介資料、DRM/KDM 及來源證明 |
+| **運算與儲存擴展** | 依製作規模匹配基建支出，同時不打破交付期限 | 將互動式生成與批次渲染分離；自動擴展 GPU 池；分層管理熱、溫、冷存儲 |
+
+### 1.3 共享產物交接契約
+
+每個階段都要向下游代理交付機器可讀的 manifest，讓創意工作、質檢與合規保持同步。
+
+| 欄位 | 用途 |
+|---|---|
+| **artifact_id / version** | 每個輸出與修訂版本的唯一身份 |
+| **parent_assets** | 指向劇本、提示詞、素材底片、分軌、參考資料及前一版剪接的來源鏈接 |
+| **brief_scope** | 精確的子任務、驗收標準與目標受眾區段 |
+| **technical_spec** | 編碼、畫幅比例、時長、幀率、色域、響度、字幕要求 |
+| **rights_and_consent** | 授權狀態、肖像／聲音同意狀態、地域限制、禁運規則 |
+| **continuity_state** | 角色造型、道具、服裝、環境、場景時間邏輯及身份雜湊 |
+| **qc_status** | 最新 L1/L2/L3 結果，以及六輪交付 QC 狀態 |
+| **target_channels** | 戲院、串流、廣播、存檔、付費社交、CRM、LMS 或影展渠道 |
+| **provenance_manifest** | C2PA 參考、評論記錄指標及最終簽核鏈 |
+
+### 1.4 反覆覆核紀律
+
+本系統的文件修訂不是一次性的校對，而是重複挑戰假設的循環。100 輪重估可分為以下幾個區段：
+
+| 輪次 | 主要問題 |
+|---|---|
+| **1-20** | 所有抽取主張是否都可追溯到參考集，並與文件結構對齊？ |
+| **21-40** | 架構是否描述了真正的控制平面：編排、記憶、資產、交付與可觀測性？ |
+| **41-60** | 工作流程交接是否足夠明確，可支援實作、QC、連戲與合規自動化？ |
+| **61-80** | 指標、門檻與評估層是否在創意、技術及商業關卡之間保持一致？ |
+| **81-100** | 用語是否無歧義、前後一致，並達到專業技術文件標準？ |
+
 ---
 
 ## 2. 主要代理名冊
 
-替換 `human_video_production_workflow.md` 第 § 部分「主要製作人員參考表」中的人類團隊。同樣的 52 個角色，轉化為代理。
+替換 `human_video_production_workflow.md` 第 § 部分「主要製作人員參考表」中的人類團隊。文件以相同的 52 個工藝角色為起點，再延伸出專家級元代理與共享製作服務。
 
 ### 2.1 主創團隊代理
 
@@ -192,16 +253,32 @@
 
 將 `human_video_production_workflow.md` 中的 10 個工作流程映射到每個階段的純代理團隊。每個儲存格列出該階段的**主要代理**以及負責審查交接的任何評論代理。
 
+### 3.0 共享工作流程骨架與交接契約
+
+在任何特定原型團隊啟動前，每個工作流程都先通過同一套操作骨架。為了簡潔，§3.1-§3.10 的表格把 **綠燈審批** 併入「概念」階段，把 **渠道封裝** 併入「發行」階段，但底層交接契約保持不變。
+
+| 階段 | 主要輸出 | 必要關卡 |
+|---|---|---|
+| **綠燈審批** | 已批准簡報、KPI 目標、預算範圍、權利／風險登記、規模配置檔 | ProducerAgent、FinanceAgent、ComplianceAgent、PlannerAgent |
+| **前期製作封包** | 劇本定稿、分鏡／風格板、資產 ID、角色／世界觀聖經、同意狀態、連戲基線 | DirectorAgent、ScreenwriterAgent、資產／資料骨幹、連戲檢查 |
+| **製作封包** | 鏡頭提示詞、攝影計劃、表演參考、素材底片、生成鏡次、渲染遙測 | PromptEngineerAgent / GeneratorOperator、CinematographerAgent、AIQAConsistencyAgent |
+| **後期母版** | 時間線、調色母版、分軌、字幕／說明字幕、QC 報告、渠道變體 | EditorAgent、ColoristAgent、SoundMixerAgent、無障礙檢查 |
+| **審核與發佈封包** | AudienceSim 結果、法律審查、來源證明封裝、簽核日誌、未解決風險清單 | ComplianceAgent、JudgeAgent、必要時 HumanInTheLoop |
+| **發行封裝** | DCP、串流 mezzanine、廣播母版、存檔封包、預告片／社交 cutdown、中介資料封包 | 交付規格驗證、無障礙驗證、地域權利驗證 |
+| **上線後學習集** | 成效遙測、修正紀錄、缺陷日誌、基準差異、再訓練工單 | AnalystAgent、EvaluationHarnessAgent、PromptOptimizerAgent、模型改進循環 |
+
+**發行分支規則：** 任何達到 S2 或以上規模的工作流程，只要場景適用，都應預設至少有四條下游分支：**戲院**、**串流**、**廣播**、**存檔**，而營銷衍生版本應與之並行產生，而非事後補做。
+
 ### 3.1 工作流程 A — 病毒式誘餌短片／迷因
 
 | 階段 | 主要代理 | 評論代理（關卡） |
 |---|---|---|
-| 概念 | TrendResearchAgent + CopywriterAgent | SocialMediaStrategistAgent |
-| 製作 | GeneratorOperatorAgent | AIQAConsistencyAgent |
-| 後期 | EditorAgent + CaptionerAgent | AccessibilityAgent |
+| 概念 | TrendIntelligenceAgent + CopywriterAgent | SocialMediaStrategistAgent |
+| 製作 | PromptEngineerAgent / GeneratorOperator | AIQAConsistencyAgent |
+| 後期 | EditorAgent + AccessibilityOptimizerAgent | AccessibilityAgent |
 | 審查 | SocialMediaStrategistAgent | AudienceSimAgent |
 | 發行 | SocialMediaStrategistAgent | ComplianceAgent |
-| 發布後 | AnalystAgent + CommunityAgent | StrategistAgent |
+| 發布後 | AnalystAgent + CommunityAgent | AudienceSimAgent |
 
 ### 3.2 工作流程 B — UGC 風格成效廣告
 
@@ -219,7 +296,7 @@
 | 階段 | 主要代理 | 評論代理 |
 |---|---|---|
 | 概念 | InstructionalDesignAgent + ScreenwriterAgent + StoryboardAgent | SMEAgent |
-| 製作 | VOAgent + AnimatorAgent + ComposerAgent | DirectorAgent |
+| 製作 | VoiceOverAgent + AnimatorAgent + ComposerAgent | DirectorAgent |
 | 後期 | EditorAgent + SoundMixerAgent | AccessibilityAgent |
 | 審查 | SMEAgent + BrandAgent | ComplianceAgent |
 | 發行 | MarketingAgent + SEOAgent | AnalystAgent |
@@ -234,14 +311,14 @@
 | 後期 | AIQAConsistencyAgent | AccessibilityAgent |
 | 審查 | TrustSafetyAgent | ComplianceAgent（GDPR/CCPA） |
 | 發行 | CRMAgent | ComplianceAgent |
-| 發布後 | AnalystAgent | StrategistAgent |
+| 發布後 | AnalystAgent | AudienceSimAgent |
 
 ### 3.5 工作流程 E — AI 多場景短片
 
 | 階段 | 主要代理 | 評論代理 |
 |---|---|---|
 | 概念 | DirectorAgent + ScreenwriterAgent + StoryboardAgent + ConceptArtistAgent | ShowrunnerAgent |
-| 製作 | PromptEngineerAgent + GeneratorOperatorAgent + VoiceCloneAgent + ComposerAgent | AIQAConsistencyAgent + LipSyncAgent |
+| 製作 | PromptEngineerAgent / GeneratorOperator + VoiceCloneAgent + ComposerAgent | AIQAConsistencyAgent + LipSyncAgent |
 | 後期 | EditorAgent + ColoristAgent + VFXSupervisorAgent | DirectorAgent |
 | 審查 | DirectorAgent + LegalAgent（C2PA） | AvatarDesignAgent（同意） |
 | 發行 | ProducerAgent + FestivalStrategistAgent | ComplianceAgent |
@@ -253,7 +330,7 @@
 |---|---|---|
 | 概念 | InstructionalDesignAgent + ComplianceAgent + ScreenwriterAgent | SMEAgent |
 | 製作 | AvatarDesignAgent + MotionGraphicsAgent | DirectorAgent |
-| 後期 | EditorAgent + AccessibilityAgent | CaptionerAgent |
+| 後期 | EditorAgent + AccessibilityAgent | AccessibilityOptimizerAgent |
 | 審查 | SMEAgent + ComplianceAgent + AccessibilityAgent | LegalAgent |
 | 發行 | LMSAgent | AnalystAgent |
 | 發布後 | AnalystAgent + InstructionalDesignAgent | LearnerSimAgent |
@@ -263,11 +340,11 @@
 | 階段 | 主要代理 | 評論代理 |
 |---|---|---|
 | 概念 | MusicVideoDirectorAgent + ProducerAgent + ChoreographyAgent | LabelA&RAgent |
-| 製作 | DoPAgent + GeneratorOperatorAgent | VFXSupervisorAgent |
+| 製作 | CinematographerAgent (DoP) + PromptEngineerAgent / GeneratorOperator + ContinuityAgent | VFXSupervisorAgent |
 | 後期 | EditorAgent + ColoristAgent + SoundMixerAgent | DirectorAgent |
 | 審查 | MusicSupervisorAgent + ComplianceAgent | LegalAgent（樣本審查） |
 | 發行 | SocialMediaStrategistAgent | LabelDigitalAgent |
-| 發布後 | AnalystAgent | StrategistAgent |
+| 發布後 | AnalystAgent | AudienceSimAgent |
 
 ### 3.8 工作流程 H — AI 虛擬人訪談影片
 
@@ -285,8 +362,8 @@
 | 階段 | 主要代理 | 評論代理 |
 |---|---|---|
 | 概念 | ShowrunnerAgent + JournalistAgent + ScreenwriterAgent | FactCheckerAgent |
-| 製作 | DirectorAgent + DoPAgent + ArchiveProducerAgent + MotionGraphicsAgent | LegalAgent（審查） |
-| 後期 | EditorAgent + VOAgent + ColoristAgent + SoundMixerAgent | AccessibilityAgent |
+| 製作 | DirectorAgent + CinematographerAgent (DoP) + ArchiveProducerAgent + MotionGraphicsAgent + FactCheckerAgent | LegalAgent（審查） |
+| 後期 | EditorAgent + VoiceOverAgent + ColoristAgent + SoundMixerAgent | AccessibilityAgent |
 | 審查 | FactCheckerAgent + LegalAgent + StandardsEditorAgent | EthicsAgent（SPJ） |
 | 發行 | ChannelManagerAgent + SocialMediaStrategistAgent + SEOAgent | AnalystAgent |
 | 發布後 | AnalystAgent + StandardsEditorAgent | CorrectionsAgent |
@@ -296,11 +373,11 @@
 | 階段 | 主要代理 | 評論代理 |
 |---|---|---|
 | 開發 | ScreenwriterAgent + ProducerAgent + DirectorAgent + ConceptArtistAgent + CastingAgent | LegalAgent（IP、同意） |
-| 前期製作 | StoryboardAgent + ProductionDesignAgent + CostumeAgent | DirectorAgent |
-| 製作 | GeneratorOperatorAgent（團隊） + VoiceCloneAgent + LipSyncAgent + ComposerAgent | AIQAConsistencyAgent + AvatarDesignAgent |
+| 前期製作 | StoryboardAgent + ProductionDesignAgent + CostumeAgent + ContinuityAgent | DirectorAgent |
+| 製作 | PromptEngineerAgent / GeneratorOperator（團隊） + VoiceCloneAgent + LipSyncAgent + ComposerAgent | AIQAConsistencyAgent + AvatarDesignAgent |
 | 後期 | EditorAgent + VFXSupervisorAgent + ColoristAgent + SoundMixerAgent | DirectorAgent |
 | 審查 | DirectorAgent + AudienceSimAgent + MPAAgent + LegalAgent（C2PA） | EthicsAgent |
-| 發行 | SalesAgent + DistributorAgent + TrailerEditorAgent + MarketingAgent | ComplianceAgent |
+| 發行 | SalesAgent + DistributorAgent + TrailerEditorAgent + MarketingAgent + ArchiveMasterAgent | ComplianceAgent |
 | 發布後 | AnalystAgent + AwardsStrategistAgent + CriticAgent（影展／媒體模擬） | ProducerAgent |
 
 ---
@@ -339,6 +416,19 @@
 | **L1 規範** | 輸出是否符合結構化簡報？ | JSON 模式檢查 + 工具驗證器（編解碼器、LUFS、畫面比例、長度） | 100% |
 | **L2 評分標準** | 是否符合該角色的工藝評分標準？ | LLM 作為評判，使用角色特定的憲法（例如剪接的 Murch 六法則） | ≥85/100 |
 | **L3 偏好** | 目標觀眾會選擇此輸出而非人類基準嗎？ | 與人類參考的成對比較，AudienceSim 小組 ≥200 個模擬人物角色 + ≥20 個 HiTL 樣本 | 勝率 ≥50%（持平）或 ≥55%（超越） |
+
+### 交付 QC 驗證網
+
+L1／L2／L3 框架負責代理品質，但任何資產在發佈前都必須額外通過共享的六輪交付驗證網：
+
+| 輪次 | 重點 | 常見檢查 |
+|---|---|---|
+| **Q1 規格驗證** | 檔案與結構正確性 | 解析度、時長、幀率、畫幅比例、編碼、中介資料完整度 |
+| **Q2 視覺瑕疵偵測** | 渲染完整性 | 色帶、閃爍、壓縮瑕疵、失焦、時間不穩定 |
+| **Q3 音訊與同步驗證** | 聲音品質 | 響度目標、爆音、相位一致性、音素—口型同步、唇形漂移 |
+| **Q4 連戲驗證** | 故事與場景一致性 | 角色身份、服裝、道具、環境狀態、時間邏輯 |
+| **Q5 感知品質** | 人類觀眾可接受性 | 美感偏好、可理解度、情緒匹配、整體完成度 |
+| **Q6 交付合規** | 渠道可上線程度 | DCP／封裝驗證、串流中介資料、廣播安全範圍、存檔校驗碼、字幕可用性 |
 
 ### 代理如何知道它超越了人類專業人員
 
@@ -393,6 +483,36 @@
 | **獎項評分標準基礎** | 反向工程主要工會的評分表 → 憲法 | DGA、WGA、ASC、ACE、MPSE、VES、Annie、CAS、HPA、康城、AMPAS |
 | **對抗性紅隊** | 每個新模型版本由 DeepfakeDetectionAgent + EthicsAgent 攻擊 | Hany Farid 實驗室基準；AI 合作夥伴合成媒體框架 |
 | **發布後現實檢查** | 30/60/90 天指標作為真實情況回饋（留存率、ROAS、完成率、獎項） | YouTube Analytics、Wistia、Meta/TikTok 廣告報告、Metacritic、Box Office Mojo |
+
+### 7.1 蒸餾輸入與治理
+
+| 資料族群 | 例子 | 重要原因 |
+|---|---|---|
+| **敘事文字** | 劇本、字幕、逐字稿、方案、評論 | 訓練故事結構、對白、敘事壓縮與主張抽取 |
+| **視覺素材** | 分鏡、影格、素材底片、概念圖、鏡頭庫 | 為構圖、連戲、鏡頭語言與風格遷移提供基礎 |
+| **音訊素材** | 對白、ADR、環境聲、音效庫、配樂分軌 | 支援語音、同步、聲音設計、混音與情緒建模 |
+| **結構化中介資料** | 預算、排程、權利紀錄、觀看完成率、CTR、ROAS、修正紀錄 | 讓創意輸出與商業及合規結果連接起來 |
+| **多模態配對資料** | 影片 + 音訊 + 字幕組、提示詞／輸出配對、場景封包 | 支援端到端生成、QA 與檢索工作流程 |
+| **營運遙測** | 佇列深度、渲染延遲、重渲原因、快取命中、基準回歸 | 將製作行為轉化為優化與再訓練信號 |
+
+**治理規則：** 只使用已授權或已同意來源；明確的聲音／肖像同意鏈；資料集版本控制；在類型、年代、語言與文化之間做偏差平衡；所有關鍵發佈資產均附帶來源證明。
+
+### 7.2 規模配置檔與部署策略
+
+| 規模 | 典型範圍 | 工作流程含義 |
+|---|---|---|
+| **S1-S2** | 短片、UGC 廣告、輕量解說內容 | 代理數較少、迭代快、分支有限、可觀測性堆疊較輕 |
+| **S3-S4** | 廣播級內容、高級社交內容、音樂影片、持續品牌系列 | 需要更強連戲、較完整 QC、多格式交付、排程發佈、較豐富分析 |
+| **S5-S6** | 紀錄片、長篇品牌內容、企業學習素材庫 | 需要存檔策略、更強權利管理、基準監控、多語封裝 |
+| **S7** | 長片或電影級製作 | 需要完整分支封裝、重型渲染編排、分散式儲存、正式發佈治理，以及長尾再訓練 |
+
+### 7.3 封閉式改進循環
+
+1. 在觀眾留存、ROAS、完成率、修正紀錄及平台交付失敗等面向收集上線後遙測。
+2. 將重複出現的失敗模式轉化為提示詞更新、路由策略、評分標準修訂或模型訓練工單。
+3. 在升級新模型、提示包或編排策略前，先執行基準與回歸測試套件。
+4. 對虛擬人、語音、合規及交付流程中的高風險改動，採用金絲雀或限制性 rollout。
+5. 保持雙向學習循環：製作品質反饋訓練，而訓練資產更新只在依賴關係需要時觸發定向重渲或重新封裝。
 
 ---
 
