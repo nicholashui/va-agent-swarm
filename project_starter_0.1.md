@@ -1,3 +1,5 @@
+  
+```
 # project_starter.md: Build Ultimate Coding Agent Harness Starter Project
 
 
@@ -13,7 +15,7 @@ It combines the **best elements** from the top-ranked GitHub coding agent projec
 - Prioritize **highest-ranked** items on feature/skill/rule overlap (ECC #1 > Karpathy rules #2 > claude-mem #3 > shanraisshan best-practice #4 > antigravity-awesome-skills #5, etc.).  
 - Keep it **portable, minimal-Docker where possible, local-first**, with excellent security, memory, and token efficiency.  
 - Output must be **agent-friendly**: clear phases, checklists, acceptance criteria, and hooks for critic/review agents.  
-- Support iterative refinement (plan â implement â review â improve loops).  
+- Support iterative refinement (plan → implement → review → improve loops).  
 - Target users: Solo developers, small teams, or power users building custom AI coding workflows (aligns with harness engineering + N1ch01as-style meta-systems).
 
 **Success Criteria**  
@@ -47,7 +49,7 @@ This solves the common problem where different agents have fragmented or outdate
 **Updated Folder Structure** (add these):
 
 ```
-ultimate-agent-harness-starter/ âââ skills/ # â Single source of truth (Markdown skills) âââ rules/ # â Single source of truth (behavioral + coding standards) âââ hooks/ # â Shared automation hooks âââ mcp-configs/ # â Shared MCP definitions âââ .claude/ # Claude Code (skills, commands, hooks, rules) â synced âââ .cursor/ # Cursor rules & settings â synced/adapted âââ agents/ # Custom sub-agents âââ scripts/ â âââ sync-skills.sh # â Main sync script (or Node.js equivalent) â âââ sync-to-claude.sh â âââ sync-to-cursor.sh â âââ â¦ âââ docs/ âââ â¦  
+ultimate-agent-harness-starter/ ├── skills/ # ← Single source of truth (Markdown skills) ├── rules/ # ← Single source of truth (behavioral + coding standards) ├── hooks/ # ← Shared automation hooks ├── mcp-configs/ # ← Shared MCP definitions ├── .claude/ # Claude Code (skills, commands, hooks, rules) ← synced ├── .cursor/ # Cursor rules & settings ← synced/adapted ├── agents/ # Custom sub-agents ├── scripts/ │ ├── sync-skills.sh # ← Main sync script (or Node.js equivalent) │ ├── sync-to-claude.sh │ ├── sync-to-cursor.sh │ └── … ├── docs/ └── …  
 ```
 **Tasks to Implement Synchronization**:
 1. [ ] Create central `skills/`, `rules/`, `hooks/`, and `mcp-configs/` as the **authoritative source**.
@@ -74,11 +76,11 @@ This layer makes the entire starter **truly portable and consistent** across you
 
 ---
 
-## Self-Evaluation & Critic Routine (Agent Self-Quality Assessment) â Research-Enhanced
+## Self-Evaluation & Critic Routine (Agent Self-Quality Assessment) — Research-Enhanced
 
-**Objective**: Add a built-in **routine** so the coding agent can **evaluate its own output quality** (self-critique / self-review). This creates a closed-loop improvement system: plan â implement â self-evaluate â refine.
+**Objective**: Add a built-in **routine** so the coding agent can **evaluate its own output quality** (self-critique / self-review). This creates a closed-loop improvement system: plan → implement → self-evaluate → refine.
 
-This section is significantly strengthened based on deep research from xAI (Grok multi-agent capabilities, Grok Build agentic coding focus, transparent/auditable reasoning) and high-quality 2025â2026 research (Reflexion, Self-Refine, SAGE multi-agent self-evolution, SCALAR Structured CriticâActor Loop, human-in-the-loop self-improvement frameworks, context folding/memory architectures).
+This section is significantly strengthened based on deep research from xAI (Grok multi-agent capabilities, Grok Build agentic coding focus, transparent/auditable reasoning) and high-quality 2025–2026 research (Reflexion, Self-Refine, SAGE multi-agent self-evolution, SCALAR Structured Critic–Actor Loop, human-in-the-loop self-improvement frameworks, context folding/memory architectures).
 
 **Research-Backed Design Principles**
 - **Multi-agent critic patterns** (xAI Grok Multi-Agent + SAGE): Use specialized roles (Actor/Solver + Critic/Challenger + optional Judge) that can work in parallel. Each sub-agent shows its reasoning for full auditability and transparency.
@@ -86,7 +88,7 @@ This section is significantly strengthened based on deep research from xAI (Grok
 - **Human-in-the-loop safety** (strong research consensus): All high-impact changes require human confirmation. Optional human guidance when domain knowledge evolves rapidly.
 - **Memory & context management**: Support hierarchical summaries, reflection storage, and context folding for long-horizon tasks (enhancing claude-mem with ideas from AgentFold / Recursive Language Models research).
 - **Transparency & auditability** (core xAI philosophy): Every sub-agent reasoning step, critique, and decision is logged and reviewable.
-- **ECC-first + Research layer**: Start with ECCâs existing review/critique capabilities as the foundation, then layer on stronger multi-agent critic loops and structured reflection.
+- **ECC-first + Research layer**: Start with ECC’s existing review/critique capabilities as the foundation, then layer on stronger multi-agent critic loops and structured reflection.
 
 **Enhanced Dimensions for Self-Evaluation** (rubric)
 1. **Correctness & Functionality** (with explicit precondition and state verification)
@@ -95,10 +97,10 @@ This section is significantly strengthened based on deep research from xAI (Grok
 4. **Security & Safety**
 5. **Performance, Efficiency & Token Usage**
 6. **Maintainability & Clarity**
-7. **Reasoning Quality & Auditability** (new dimension â transparency and verifiability of thought process)
+7. **Reasoning Quality & Auditability** (new dimension — transparency and verifiability of thought process)
 8. **Self-Improvement Potential** (how actionable the critique is for refinement)
 
-**Core Routine Flow** (Actor â Multi-Agent Critic â Refine + Memory loop)
+**Core Routine Flow** (Actor → Multi-Agent Critic → Refine + Memory loop)
 - **Actor/Solver**: Generates the implementation or solution using ECC skills + Karpathy rules.
 - **Critic/Challenger** (can be multi-agent): Runs structured self-critique using the enhanced rubric. Can spawn parallel sub-agents for deeper analysis on different dimensions (e.g., one for security, one for simplicity). Produces scores + specific issues + concrete, actionable improvement suggestions.
 - **Reflection Storage**: Critiques, lessons learned, and successful patterns are stored in episodic memory (build on claude-mem or add dedicated structured reflection store with hierarchical summaries).
@@ -107,15 +109,15 @@ This section is significantly strengthened based on deep research from xAI (Grok
 - **Full Audit Log**: All reasoning traces, critiques, and decisions are recorded for transparency and later review (xAI-style auditability).
 
 **Why This Matters**
-- Prevents âvibe codingâ drift.
+- Prevents “vibe coding” drift.
 - Enforces spec adherence (SDD).
 - Catches issues early (correctness, security, complexity, token waste, maintainability).
 - Makes the agent more autonomous and reliable over time.
 
 **Design (ECC-first + Extensible)**
-- Central critic skill(s) in `./skills/critic/` (or reuse/extend ECCâs existing review/critique capabilities).
+- Central critic skill(s) in `./skills/critic/` (or reuse/extend ECC’s existing review/critique capabilities).
 - Structured self-evaluation prompt/template that outputs:
-  - Overall quality score (e.g., 1â10 or rubric-based)
+  - Overall quality score (e.g., 1–10 or rubric-based)
   - Breakdown across dimensions (Correctness, Simplicity/Karpathy alignment, Spec adherence, Security, Performance, Maintainability, Token efficiency)
   - Specific issues found
   - Concrete improvement suggestions (as new tasks or diff recommendations)
@@ -127,16 +129,16 @@ This section is significantly strengthened based on deep research from xAI (Grok
 - Feeds back into the loop (agent can then refine based on its own critique)
 
 **Dimensions for Self-Evaluation** (customizable rubric)
-1. **Correctness & Functionality** â Does it meet the spec/task requirements? Tests pass?
-2. **Simplicity & Karpathy Alignment** â Minimal, surgical changes? No unnecessary abstractions?
-3. **Spec / SDD Adherence** â Stays true to the original specification and task breakdown?
-4. **Security & Safety** â No obvious vulnerabilities, secrets, or unsafe patterns?
-5. **Performance & Efficiency** â Reasonable complexity and token usage?
-6. **Maintainability & Clarity** â Clean, well-documented, follows project rules?
-7. **Overall Confidence** â How confident is the agent in this output?
+1. **Correctness & Functionality** — Does it meet the spec/task requirements? Tests pass?
+2. **Simplicity & Karpathy Alignment** — Minimal, surgical changes? No unnecessary abstractions?
+3. **Spec / SDD Adherence** — Stays true to the original specification and task breakdown?
+4. **Security & Safety** — No obvious vulnerabilities, secrets, or unsafe patterns?
+5. **Performance & Efficiency** — Reasonable complexity and token usage?
+6. **Maintainability & Clarity** — Clean, well-documented, follows project rules?
+7. **Overall Confidence** — How confident is the agent in this output?
 
 **Tasks to Implement**
-1. [ ] Create or adapt a core **critic / self-review skill** in `./skills/critic/self-review.md` (start with ECCâs review capabilities as base, enhance with Karpathy + best-practice patterns).
+1. [ ] Create or adapt a core **critic / self-review skill** in `./skills/critic/self-review.md` (start with ECC’s review capabilities as base, enhance with Karpathy + best-practice patterns).
 2. [ ] Define a reusable **self-evaluation prompt template** (in `rules/` or `skills/critic/`) that agents can invoke.
 3. [ ] Add a **slash command** (e.g., `/self-review` or `/critic`) in `.claude/commands/` that triggers structured self-evaluation on the current context or last changes.
 4. [ ] Create a **post-completion hook** that optionally runs self-review after significant code changes or task completion.
@@ -151,15 +153,15 @@ This section is significantly strengthened based on deep research from xAI (Grok
 - Self-review can be triggered manually or automatically via hook.
 - Output includes scores + concrete improvement tasks that can be fed back into the workflow.
 - Uses highest-ranked sources first (ECC review skills + Karpathy principles + best practices).
-- Becomes a standard quality gate in the starterâs workflows.
+- Becomes a standard quality gate in the starter’s workflows.
 
-This routine turns the coding agent from a one-shot generator into a **self-improving system** â a key characteristic of advanced harness engineering.
+This routine turns the coding agent from a one-shot generator into a **self-improving system** — a key characteristic of advanced harness engineering.
 
 ---
 
 ## Skill Lifecycle: Auto-Suggest Add / Update / Remove with Human Confirmation
 
-**Objective**: Enable the system to **automatically suggest** adding new skills, updating existing ones, or removing low-value/outdated skills â but **never apply changes without explicit human confirmation**. This creates a safe, controlled self-evolution loop for the skill set.
+**Objective**: Enable the system to **automatically suggest** adding new skills, updating existing ones, or removing low-value/outdated skills — but **never apply changes without explicit human confirmation**. This creates a safe, controlled self-evolution loop for the skill set.
 
 This builds directly on the Self-Evaluation & Critic Routine and the central `skills/` source of truth.
 
@@ -185,10 +187,10 @@ This builds directly on the Self-Evaluation & Critic Routine and the central `sk
    - Easy rollback via git or a dedicated undo mechanism.
 
 **Design Principles**
-- **Never auto-apply** â human confirmation is mandatory for any add/update/remove of skills.
-- **ECC-first**: Leverage ECCâs continuous learning / instinct promotion patterns where possible, then extend with explicit suggestion + confirmation.
+- **Never auto-apply** — human confirmation is mandatory for any add/update/remove of skills.
+- **ECC-first**: Leverage ECC’s continuous learning / instinct promotion patterns where possible, then extend with explicit suggestion + confirmation.
 - **Transparent & Auditable**: Every suggestion includes clear rationale, expected benefit, and risk/impact.
-- **Non-blocking**: Suggestions donât interrupt work; they are collected and reviewed periodically or on demand.
+- **Non-blocking**: Suggestions don’t interrupt work; they are collected and reviewed periodically or on demand.
 - **Extensible**: The same pattern can later apply to rules, hooks, or even project-level improvements.
 
 **Tasks to Implement**
@@ -196,9 +198,9 @@ This builds directly on the Self-Evaluation & Critic Routine and the central `sk
 2. [ ] Define a standard **suggestion format** (Markdown template with sections: Action, Skill Name, Rationale, Impact, Proposed Content/Diff, Confidence).
 3. [ ] Add storage for pending suggestions (`suggestions/` folder + manifest or `pending-skill-changes.md`).
 4. [ ] Create slash commands:
-   - `/suggest-skills` â trigger analysis and generate new suggestions.
-   - `/review-suggestions` â list pending suggestions with details.
-   - `/approve-suggestion ` or `/confirm-changes` â human confirmation step.
+   - `/suggest-skills` — trigger analysis and generate new suggestions.
+   - `/review-suggestions` — list pending suggestions with details.
+   - `/approve-suggestion ` or `/confirm-changes` — human confirmation step.
 5. [ ] Integrate with the Self-Evaluation routine so strong critiques can automatically trigger relevant suggestions.
 6. [ ] After human confirmation, automatically apply the change to central `skills/` and trigger the sync layer.
 7. [ ] Add logging/audit trail for all confirmed changes.
@@ -212,7 +214,7 @@ This builds directly on the Self-Evaluation & Critic Routine and the central `sk
 - Full audit trail exists.
 - Workflow feels natural and non-intrusive (agent proposes, human decides, system applies).
 
-This completes a powerful **safe self-improvement loop** for the entire harness while keeping the human firmly in control â exactly the kind of robust, production-grade design that advanced coding agent setups need.
+This completes a powerful **safe self-improvement loop** for the entire harness while keeping the human firmly in control — exactly the kind of robust, production-grade design that advanced coding agent setups need.
 
 ---
 
@@ -222,17 +224,17 @@ This completes a powerful **safe self-improvement loop** for the entire harness 
 
 **Tasks**:
 1. [ ] Verify current top repos (use web search or direct GitHub):
-   - ECC (affaan-m/ECC) â primary harness (skills, agents, hooks, rules, security, MCP).
-   - Karpathy rules (forrestchang/andrej-karpathy-skills or multica-ai mirror) â behavioral CLAUDE.md.
-   - claude-mem (thedotmack/claude-mem) â persistent memory.
-   - shanraisshan/claude-code-best-practice â workflows & patterns.
-   - sickn33/antigravity-awesome-skills â bulk skill library (selective install only high-value bundles).
+   - ECC (affaan-m/ECC) – primary harness (skills, agents, hooks, rules, security, MCP).
+   - Karpathy rules (forrestchang/andrej-karpathy-skills or multica-ai mirror) – behavioral CLAUDE.md.
+   - claude-mem (thedotmack/claude-mem) – persistent memory.
+   - shanraisshan/claude-code-best-practice – workflows & patterns.
+   - sickn33/antigravity-awesome-skills – bulk skill library (selective install only high-value bundles).
 2. [ ] Identify overlaps and decide:
-   - Core harness/rules/hooks/security/MCP â **ECC first** (highest rank + most comprehensive).
-   - Behavioral guidelines â **Karpathy rules** (add as base or merge into ECC rules if compatible).
-   - Memory â **claude-mem** (or ECC's built-in memory/instincts if sufficient; prefer dedicated if better persistence).
-   - Planning / best-practice workflows â Merge from shanraisshan + ECC's planning skills.
-   - Bulk skills â Use antigravity-awesome-skills installer but **curate** only top 20â50 most useful (planning, TDD, review, security, frontend, etc.). Avoid installing everything.
+   - Core harness/rules/hooks/security/MCP → **ECC first** (highest rank + most comprehensive).
+   - Behavioral guidelines → **Karpathy rules** (add as base or merge into ECC rules if compatible).
+   - Memory → **claude-mem** (or ECC's built-in memory/instincts if sufficient; prefer dedicated if better persistence).
+   - Planning / best-practice workflows → Merge from shanraisshan + ECC's planning skills.
+   - Bulk skills → Use antigravity-awesome-skills installer but **curate** only top 20–50 most useful (planning, TDD, review, security, frontend, etc.). Avoid installing everything.
 3. [ ] Check for official Anthropic skills or new high-rank additions since last check.
 4. [ ] Document decisions in `docs/decisions.md` (use ECC's research-first style).
 
@@ -242,7 +244,7 @@ This completes a powerful **safe self-improvement loop** for the entire harness 
 
 ---
 
-## Phase 1: Project Scaffolding & ECC Foundation (Core â Highest Priority)
+## Phase 1: Project Scaffolding & ECC Foundation (Core – Highest Priority)
 
 **Objective**: Create the repo skeleton and install ECC as the complete base harness.
 
@@ -251,7 +253,7 @@ This completes a powerful **safe self-improvement loop** for the entire harness 
 2. [ ] Create standard structure:
 
 ```
-ultimate-agent-harness-starter/ âââ .claude/ # Claude Code specific (commands, skills, hooks, rules) âââ .cursor/ # Cursor rules if needed âââ agents/ # Custom sub-agents or extensions âââ skills/ # Curated high-value skills (merged) âââ rules/ # Merged behavioral + coding standards âââ hooks/ # Automation hooks âââ mcp-configs/ # MCP server configs âââ docs/ â âââ README.md â âââ decisions.md â âââ installation.md â âââ usage.md âââ scripts/ # Bootstrap & helper scripts (bash/node) âââ examples/ # Example projects or workflows âââ task.md # This file + future task tracking âââ .gitignore  
+ultimate-agent-harness-starter/ ├── .claude/ # Claude Code specific (commands, skills, hooks, rules) ├── .cursor/ # Cursor rules if needed ├── agents/ # Custom sub-agents or extensions ├── skills/ # Curated high-value skills (merged) ├── rules/ # Merged behavioral + coding standards ├── hooks/ # Automation hooks ├── mcp-configs/ # MCP server configs ├── docs/ │ ├── README.md │ ├── decisions.md │ ├── installation.md │ └── usage.md ├── scripts/ # Bootstrap & helper scripts (bash/node) ├── examples/ # Example projects or workflows ├── task.md # This file + future task tracking └── .gitignore  
 ```
 3. [ ] **Install ECC as foundation** (highest rank):
 - Follow official ECC install (plugin or manual component copy).
@@ -319,7 +321,7 @@ ultimate-agent-harness-starter/ âââ .claude/ # Claude Code specif
 **Tasks**:
 1. [ ] Enable **AgentShield** (or ECC security) + secret detection, vulnerability scanning.
 2. [ ] Configure key **hooks** (pre-commit validation, post-completion review, context compaction, cost tracking).
-3. [ ] Set up **MCP configs** for common tools (GitHub, file system, etc.) â start minimal and secure.
+3. [ ] Set up **MCP configs** for common tools (GitHub, file system, etc.) – start minimal and secure.
 4. [ ] Apply ECC token optimization settings (MAX_THINKING_TOKENS, compact thresholds, etc.).
 5. [ ] Add `.gitignore`, license (MIT), and contributor guidelines.
 6. [ ] Create bootstrap script(s) in `scripts/`:
@@ -343,7 +345,7 @@ ultimate-agent-harness-starter/ âââ .claude/ # Claude Code specif
 - `README.md` with quick start, architecture overview, ranking rationale.
 - `installation.md` with exact commands.
 - `usage.md` with example workflows (plan a feature with SDD, parallel agents via task.md, security review, etc.).
-2. [ ] Add 2â3 example mini-projects or workflow demos in `examples/`.
+2. [ ] Add 2–3 example mini-projects or workflow demos in `examples/`.
 3. [ ] Implement quality gates:
 - Automated lint / security scan on changes.
 - Review prompt or agent command for PRs/changes.
@@ -363,7 +365,7 @@ ultimate-agent-harness-starter/ âââ .claude/ # Claude Code specif
 **Objective**: Design for ongoing evolution (your N1ch01as Architect style).
 
 **Tasks**:
-1. [ ] Add self-improvement loop skill (research new skills â propose additions â critic review â merge).
+1. [ ] Add self-improvement loop skill (research new skills → propose additions → critic review → merge).
 2. [ ] Support easy updates from upstream (ECC, skill libraries) via scripts.
 3. [ ] Include placeholders for domain-specific extensions (e.g., trading skills, frontend design, Django/TS stacks).
 4. [ ] Plan for multi-agent orchestration examples using ECC's dmux + task.md pattern.
@@ -405,3 +407,7 @@ This task.md itself serves as the living **spec** for the project. Update it as 
 ---
 
 *This task.md follows SDD principles and harness engineering best practices from the top sources.*
+
+```
+  
+  
