@@ -12,6 +12,39 @@
 
 ---
 
+## 0. 視覺圖表(請先閱讀)
+
+以下六張圖表完整描述本流程,並貫穿下文各節引用。原始檔案位於 [`./workflows/`](./workflows/)。
+
+| # | 圖表 | 描述 | 對應章節 |
+|---|---|---|---|
+| D1 | 流程總覽 | 6 階段 DAG、負責代理、出場關卡與分析回饋迴圈 | §1、§5 |
+| D2 | 場景流 | 14 卡時間軸、情緒弧線、留存帶、逐鏡引擎 | §2、§10、§15 |
+| D3 | 逐鏡迴圈 | 3E 微迴圈、強制視覺錨定、VBench 關卡、MCTS 重導 | §3.4、§13、§14 |
+| D4 | 角色一致性堆疊 | 維持角色少年→成年穩定的身分管線 | §3.3、§12 |
+| D5 | 引擎路由 | RouterAgent 層級(含 Grok Imagine)、英雄引擎、成本優化 | §3.4、§11 |
+| D6 | 品質關卡階梯 | L1/L2/L3 關卡與 VBench/VMBench 評分卡 | §5、§13 |
+
+### D1 · 流程總覽
+![人生的靜默救贖 — 含關卡與回饋迴圈的 6 階段製作流程](./workflows/lqr-pipeline-overview.svg)
+
+### D2 · 場景流、情緒弧線與留存帶
+![14 卡場景流時間軸,含情緒弧線、留存帶與逐鏡引擎](./workflows/lqr-scene-flow.svg)
+
+### D3 · 逐鏡生成迴圈
+![逐鏡生成迴圈:3E 微迴圈、視覺錨定、圖生影片、VBench 關卡、MCTS 重導](./workflows/lqr-per-shot-loop.svg)
+
+### D4 · 角色一致性身分堆疊
+![角色一致性身分堆疊:聖經、視覺錨定、每角色 LoRA、RL 身分、記憶條件化、後備、VLM 稽核](./workflows/lqr-character-consistency.svg)
+
+### D5 · 引擎路由(RouterAgent 層級)
+![引擎路由層級:Grok Imagine 草稿與圖生影片、Agent Mode 粗剪、英雄引擎、本地 ComfyUI、成本優化](./workflows/lqr-engine-routing.svg)
+
+### D6 · 品質關卡階梯與 VBench 評分卡
+![品質關卡階梯:L1 規格、L2 評分準則 VBench 評分卡、L3 受眾偏好、GateKeeper 簽核](./workflows/lqr-quality-gates.svg)
+
+---
+
 ## 1. 流程總覽 — 階段 → 負責代理 → 服務
 
 將原本的階段 0–6 大綱,對應到 swarm 的 6 階段製作管線(SYSTEM_REFERENCE §6.1)。每個階段結束前,須先通過 **GateKeeperAgent(#57)** 的 L1/L2/L3 簽核,DAG 才會推進。
