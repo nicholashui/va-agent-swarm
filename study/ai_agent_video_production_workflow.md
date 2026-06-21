@@ -324,6 +324,17 @@ Before any archetype-specific crew activates, every workflow passes through the 
 | Distribution | ProducerAgent + FestivalStrategistAgent | ComplianceAgent |
 | Post-launch | DirectorAgent + AudienceSimAgent | CriticAgent (festival jury sim) |
 
+> **Worked example — "Life's Quiet Redemption" (60s short).** A full, research-informed application of this archetype, mapping all 14 shots to owning agents, engines, and gates: [lifes_quiet_redemption_agent_workflow.md](./lifes_quiet_redemption_agent_workflow.md) ([香港繁體](./lifes_quiet_redemption_agent_workflow_hk.md)). Diagrams in [`./workflows/`](./workflows/):
+>
+> | Diagram | Shows |
+> |---|---|
+> | [D1 · Pipeline Overview](./workflows/lqr-pipeline-overview.svg) | 6-phase DAG, gates, feedback loop |
+> | [D2 · Scene Flow](./workflows/lqr-scene-flow.svg) | 14-card arc, retention bands, per-shot engine |
+> | [D3 · Per-Shot Loop](./workflows/lqr-per-shot-loop.svg) | 3E + visual anchor + VBench gate + MCTS |
+> | [D4 · Consistency Stack](./workflows/lqr-character-consistency.svg) | Identity youth→adult |
+> | [D5 · Engine Routing](./workflows/lqr-engine-routing.svg) | Grok Imagine + hero engines + cost |
+> | [D6 · Quality Gates](./workflows/lqr-quality-gates.svg) | L1/L2/L3 + VBench scorecard |
+
 ### 3.6 Workflow F — Corporate Training Video
 
 | Phase | Lead Agent | Critic Agents |

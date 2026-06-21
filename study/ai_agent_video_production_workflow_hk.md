@@ -324,6 +324,17 @@
 | 發行 | ProducerAgent + FestivalStrategistAgent | ComplianceAgent |
 | 發布後 | DirectorAgent + AudienceSimAgent | CriticAgent（影展評審團模擬） |
 
+> **範例 —《人生的靜默救贖》(60 秒短片)。** 本原型的完整、研究啟發應用,將全部 14 個鏡頭對映到負責代理、引擎與關卡:[lifes_quiet_redemption_agent_workflow_hk.md](./lifes_quiet_redemption_agent_workflow_hk.md) ([English](./lifes_quiet_redemption_agent_workflow.md))。圖表位於 [`./workflows/`](./workflows/):
+>
+> | 圖表 | 內容 |
+> |---|---|
+> | [D1 · 流程總覽](./workflows/lqr-pipeline-overview.svg) | 6 階段 DAG、關卡、回饋迴圈 |
+> | [D2 · 場景流](./workflows/lqr-scene-flow.svg) | 14 卡弧線、留存帶、逐鏡引擎 |
+> | [D3 · 逐鏡迴圈](./workflows/lqr-per-shot-loop.svg) | 3E + 視覺錨定 + VBench 關卡 + MCTS |
+> | [D4 · 一致性堆疊](./workflows/lqr-character-consistency.svg) | 身分少年→成年 |
+> | [D5 · 引擎路由](./workflows/lqr-engine-routing.svg) | Grok Imagine + 英雄引擎 + 成本 |
+> | [D6 · 品質關卡](./workflows/lqr-quality-gates.svg) | L1/L2/L3 + VBench 評分卡 |
+
 ### 3.6 工作流程 F — 企業培訓影片
 
 | 階段 | 主要代理 | 評論代理 |
