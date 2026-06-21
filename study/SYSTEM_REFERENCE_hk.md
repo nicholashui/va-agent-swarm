@@ -510,10 +510,30 @@
 | [human_video_production_workflow.md](./human_video_production_workflow.md) | 人類基準（52 個團隊角色） | 完成 |
 | [complex_problem_solution_process_model.md](./complex_problem_solution_process_model.md) | WHAT/WHY/HOW/DO/REVIEW 方法論 | 完成 |
 | [video_generation_techology_should_learn_now.md](./video_generation_techology_should_learn_now.md) | 50 個 AI 影片生成模型（2026 年 4 月） | 完成 |
+| [lifes_quiet_redemption_agent_workflow.md](./lifes_quiet_redemption_agent_workflow.md) | 範例:代理對映 + 研究啟發的短片流程(含圖表) | 完成 |
 
 #### 中文（香港繁體）翻譯
 
 所有主要文檔均有 `_hk.md` 對應版本，提供香港繁體中文翻譯。命名模式相同（例如 `agents_hk.md`、`optimization_agent_functional_specification_hk.md`）。
+
+### 10.3 工作流程圖表庫 —《人生的靜默救贖》(範例)
+
+將本系統套用於一支 60 秒電影短片的端到端範例。下列六張圖表(位於 [`./workflows/`](./workflows/))視覺化呈現 114 代理 swarm、關卡階梯,以及 2026 引擎/研究升級如何協同運作。完整說明:[lifes_quiet_redemption_agent_workflow_hk.md](./lifes_quiet_redemption_agent_workflow_hk.md) ([English](./lifes_quiet_redemption_agent_workflow.md))。
+
+<table>
+  <tr>
+    <td width="33%" align="center"><a href="./workflows/lqr-pipeline-overview.svg"><img src="./workflows/lqr-pipeline-overview.svg" width="260" alt="6 階段流程總覽"/></a><br/><b>D1 · 流程總覽</b><br/>6 階段 DAG、關卡、回饋迴圈</td>
+    <td width="33%" align="center"><a href="./workflows/lqr-scene-flow.svg"><img src="./workflows/lqr-scene-flow.svg" width="260" alt="場景流、情緒弧線、留存帶"/></a><br/><b>D2 · 場景流</b><br/>弧線、留存帶、逐鏡引擎</td>
+    <td width="33%" align="center"><a href="./workflows/lqr-per-shot-loop.svg"><img src="./workflows/lqr-per-shot-loop.svg" width="260" alt="逐鏡生成迴圈"/></a><br/><b>D3 · 逐鏡迴圈</b><br/>3E + 視覺錨定 + VBench + MCTS</td>
+  </tr>
+  <tr>
+    <td width="33%" align="center"><a href="./workflows/lqr-character-consistency.svg"><img src="./workflows/lqr-character-consistency.svg" width="260" alt="角色一致性身分堆疊"/></a><br/><b>D4 · 一致性堆疊</b><br/>身分少年→成年</td>
+    <td width="33%" align="center"><a href="./workflows/lqr-engine-routing.svg"><img src="./workflows/lqr-engine-routing.svg" width="260" alt="引擎路由層級"/></a><br/><b>D5 · 引擎路由</b><br/>Grok Imagine + 英雄引擎 + 成本</td>
+    <td width="33%" align="center"><a href="./workflows/lqr-quality-gates.svg"><img src="./workflows/lqr-quality-gates.svg" width="260" alt="品質關卡階梯與 VBench 評分卡"/></a><br/><b>D6 · 品質關卡</b><br/>L1/L2/L3 + VBench 評分卡</td>
+  </tr>
+</table>
+
+> 若縮圖未顯示,點擊即可開啟完整 SVG。圖表沿用與 [common-agent-structure.svg](./common-agent-structure.svg) 相同的視覺語言。
 
 
 
